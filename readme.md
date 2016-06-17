@@ -1,6 +1,8 @@
 # Pure JS MouseTip
 A pure javascript solution for creating tooltips that follow your mouse. This project was heavily inspired from the [MouseTip jQuery extension by Nathan Rutzky](https://github.com/nathco/jQuery.mousetip).
 
+![A demonstration of the javascript in action](http://joeleisner.com/github/screenshots/purejs-mousetip/purejs-moustip-demo.gif)
+
 ## Installation
 Simply include the `mousetip.js` or `mousetip.min.js` script at the bottom of your document. That's it!
 ```html
