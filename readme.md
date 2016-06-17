@@ -14,6 +14,7 @@ Create an element and give it the `mousetip` attribute as well as a `mousetip-ms
 <div class="box" mousetip mousetip-msg="I'm another message!"></div>
 ```
 There are also other attributes you can use to tweak your tooltip:
+
 Attribute | Description | Default | Example
 --- | --- | --- | ---
 `mousetip-pos` | Alters the vertical/horizontal alignment of the tooltip relative to the mouse cursor. The attribute takes a string that is space separated, the first value for vertical alignment, and the second value for horizontal alignment. The vertical alignment options are `bottom`, `center`, `top`, and the horizontal alignment options are `right`, `center`, `left` (Warning: the use of `center center` is not advised; causes flickering) | `bottom right` | `<div mousetip mousetip-msg="Message" mousetip-pos="top left"></div>`
