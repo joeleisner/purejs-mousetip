@@ -55,3 +55,9 @@ gulp.task('build-min', ['clean'], function() {
         .pipe(rename({suffix:'.min'}))
         .pipe(gulp.dest(config.dest));
 });
+
+// Move to Demo Task
+gulp.task('move-to-demo', ['build'], function() {
+    return gulp.src(config.dest + '/*.js')
+        .pipe(gulp.dest('demo/assets/js'));
+});
