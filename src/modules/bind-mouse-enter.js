@@ -1,5 +1,5 @@
 // Bind Mouse Enter Function
-function bindMouseEnter(element) {
+this.bindMouseEnter = function(element, settings) {
     // Bind a 'mouseenter' event listener to the element
     element.addEventListener('mouseenter', function(event) {
         // When the user enters the element, create the mouse-tip element with a message defined from the elements 'mousetip-msg' attribute, ...
@@ -16,12 +16,12 @@ function bindMouseEnter(element) {
         // ... give the mouse-tip an id for easier DOM selection, ...
         mouseTip.id = 'mousetip';
         // ... set the default styles of the mouse-tip (use styling attributes if applicable), ...
-        mouseTip.style.zIndex = mouseTipZIndex || '9999';
-        mouseTip.style.position = mouseTipPosition || 'absolute';
-        mouseTip.style.padding = mouseTipPadding || '15px';
-        mouseTip.style.borderRadius = mouseTipBorderRadius || '4px';
-        mouseTip.style.background = mouseTipBackground || 'rgba(0,0,0,0.75)';
-        mouseTip.style.color = mouseTipColor || '#fff';
+        mouseTip.style.zIndex = mouseTipZIndex || settings.cssZIndex;
+        mouseTip.style.position = mouseTipPosition || settings.cssPosition;
+        mouseTip.style.padding = mouseTipPadding || settings.cssPadding;
+        mouseTip.style.borderRadius = mouseTipBorderRadius || settings.cssBorderRadius;
+        mouseTip.style.background = mouseTipBackground || settings.cssBackground;
+        mouseTip.style.color = mouseTipColor || settings.cssColor;
         // ... append the message to the mouse-tip, ...
         mouseTip.appendChild(mouseTipMsg);
         // ... and append the mouse-tip to the document body
