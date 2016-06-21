@@ -4,7 +4,7 @@ A pure javascript solution for creating tooltips that follow your mouse. This pr
 ![A demonstration of the javascript in action](http://joeleisner.com/github/screenshots/purejs-mousetip/purejs-moustip-demo.gif)
 
 ## Change Log
-*Version 1.0.0*
+### Version 1.0.0
 Version 1.0.0 is here, and it includes an entirely new way to use the PureJS MouseTip script!
 - The script is now wrapped in a MouseTip constructor function instead of a self-executing function
 - The script can now take global style/position overrides when an instance of the constructor is created
