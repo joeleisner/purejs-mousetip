@@ -3,8 +3,8 @@ this.bindMouseMove = function(element, positionDefault) {
     // Bind a 'mousemove' event listener to the element
     element.addEventListener('mousemove', function(event) {
         // When the user moves within the element, get the user's mouse X and Y, ...
-        var mouseX = event.clientX,
-            mouseY = event.clientY,
+        var mouseX = event.pageX,
+            mouseY = event.pageY,
             // ... select the mouse-tip, ...
             mouseTip = document.getElementById('mousetip'),
             // ... then check to see if the element has a specified mousetip position
