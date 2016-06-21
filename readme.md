@@ -3,10 +3,21 @@ A pure javascript solution for creating tooltips that follow your mouse. This pr
 
 ![A demonstration of the javascript in action](http://joeleisner.com/github/screenshots/purejs-mousetip/purejs-moustip-demo.gif)
 
+## Change Log
+*Version 1.0.0*
+Version 1.0.0 is here, and it includes an entirely new way to use the PureJS MouseTip script!
+- The script is now wrapped in a MouseTip constructor function instead of a self-executing function
+- The script can now take global style/position overrides when an instance of the constructor is created
+- The script will not find the MouseTip elements or bind mouse events until a constructor instance's .run() function is called
+
 ## Installation
-Simply include the `mousetip.js` or `mousetip.min.js` script at the bottom of your document. That's it!
+Simply include the `mousetip.js` or `mousetip.min.js` script at the bottom of your document. Than initialize it by creating a new MouseTip instance, and calling .run() on it. That's it!
 ```html
 <script src="mousetip.min.js"></script>
+<script>
+    var mouseTip = new MouseTip();
+    mouseTip.run();
+</script>
 ```
 
 ## How to Use
@@ -15,7 +26,7 @@ Create an element and give it the `mousetip` attribute as well as a `mousetip-ms
 <div class="box" mousetip mousetip-msg="I'm a message!"></div>
 <div class="box" mousetip mousetip-msg="I'm another message!"></div>
 ```
-There are also other attributes you can use to tweak your tooltip:
+There are also other attributes you can use on your MouseTip elements to tweak your tooltips:
 
 Attribute | Description | Default | Example
 --- | --- | --- | ---
@@ -26,6 +37,26 @@ Attribute | Description | Default | Example
 `moutstip-css-borderradius` | Alters the CSS border-radius of the tooltip | `4px` | `<div mousetip mousetip-msg="Message" mousetip-css-borderradius="15px"></div>`
 `mousetip-css-background` | Alters the CSS background color of the tooltip | `rgba(0,0,0,0.75)` | `<div mousetip mousetip-msg="Message" mousetip-css-background="white"></div>`
 `mousetip-css-color` | Alters the CSS text color of the tooltip | `#fff` | `<div mousetip mousetip-msg="Message" mousetip-css-color="black"></div>`
+
+These inline/attribute adjustments will supersede default and user-set global settings.
+
+In addition to the per-element adjustments above, you can also set global adjustments on any instance of the MouseTip constructor:
+```html
+<script src="mousetip.min.js"></script>
+<script>
+    var mouseTip = new MouseTip({
+        cssZIndex: '1000', // Default: '9999'
+        cssPosition: 'relative', // Default: 'absolute'
+        cssPadding: '30px', // Default: '15px'
+        cssBorderRadius: '15px', // Default: '4px'
+        cssBackground: 'white', // Default: 'rgba(0,0,0,0.75)'
+        cssColor: 'black', // Default: '#fff'
+        position: 'top left' // Default: 'bottom right'
+    });
+    mouseTip.run();
+</script>
+```
+This will globally affect all MouseTips. Keep in mind that inline/attribute adjustments will supersede global adjustments.
 
 ## How to Build
 If you're like me, and want to tweak the source files of the script yourself, you can easily get going by doing the following:
