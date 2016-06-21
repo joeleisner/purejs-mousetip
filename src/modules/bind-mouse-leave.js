@@ -6,4 +6,4 @@ this.bindMouseLeave = function(element) {
         var mouseTip = document.getElementById('mousetip');
         mouseTip.parentNode.removeChild(mouseTip);
     });
-}
+};

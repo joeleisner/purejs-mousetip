@@ -67,4 +67,4 @@ this.bindMouseMove = function(element, positionDefault) {
         mouseTip.style.top = mouseY + vertAdj + 'px';
         mouseTip.style.left = mouseX + horizAdj + 'px';
     });
-}
+};

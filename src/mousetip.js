@@ -21,9 +21,9 @@ function MouseTip(userSettings) {
             this.bindMouseLeave(element);
             this.bindMouseMove(element, settings.position);
         }
-    }
+    };
 
     //=include ./modules/bind-mouse-enter.js
     //=include ./modules/bind-mouse-leave.js
     //=include ./modules/bind-mouse-move.js
-};
+}

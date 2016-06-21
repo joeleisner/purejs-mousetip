@@ -27,4 +27,4 @@ this.bindMouseEnter = function(element, settings) {
         // ... and append the mouse-tip to the document body
         document.body.appendChild(mouseTip);
     });
-}
+};
