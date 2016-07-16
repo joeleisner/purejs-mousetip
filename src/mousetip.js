@@ -1,7 +1,6 @@
 function MouseTip(userSettings) {
     // Select all elements with the attribute 'mouse-tip', and accept user-defined render settings or constructor defaults
-    var elements = document.querySelectorAll('[mousetip]'),
-        userSettings = userSettings || {},
+    var userSettings = userSettings || {},
         settings = {
             cssZIndex: userSettings.cssZIndex || '9999',
             cssPosition: userSettings.cssPosition || 'absolute',
@@ -9,8 +8,10 @@ function MouseTip(userSettings) {
             cssBorderRadius: userSettings.cssPosition || '4px',
             cssBackground: userSettings.cssBackground || 'rgba(0,0,0,0.75)',
             cssColor: userSettings.cssColor || '#fff',
-            position: userSettings.position || 'bottom right'
-        };
+            position: userSettings.position || 'bottom right',
+            selector: userSettings.selector || 'mousetip'
+        },
+        elements = document.querySelectorAll('[' + settings.selector + ']');
     // Run Function
     this.run = function() {
         // For each element selected...
@@ -18,8 +19,8 @@ function MouseTip(userSettings) {
             var element = elements[i];
             // ... bind it to events triggered by 'mouseenter', 'mouseleave', and 'mousemove'
             this.bindMouseEnter(element, settings);
-            this.bindMouseLeave(element);
-            this.bindMouseMove(element, settings.position);
+            this.bindMouseLeave(element, settings);
+            this.bindMouseMove(element, settings);
         }
     };
 
