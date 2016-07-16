@@ -8,7 +8,7 @@ A pure javascript solution for creating tooltips that follow your mouse. This pr
 Added new MouseTip constructor setting **selector**
 - Now you can namespace every MouseTip instance
 - When a custom selector is passed into the settings, MouseTip will look for attributes with that new namespace (i.e. "awesomeName" instead of "mousetip", "awesomeName-css-zindex" instead of "mousetip-css-zindex")
-- See the *How to Use* section to see this new setting in action
+- Check out the *How to Use* section to see this new setting in action
 
 ### Version 1.0.1
 Simple bug fixes:
