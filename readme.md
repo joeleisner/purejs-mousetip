@@ -4,6 +4,12 @@ A pure javascript solution for creating tooltips that follow your mouse. This pr
 ![A demonstration of the javascript in action](http://joeleisner.com/github/screenshots/purejs-mousetip/purejs-moustip-demo.gif)
 
 ## Change Log
+### Version 1.1.0
+Added new MouseTip constructor setting **selector**
+- Now you can namespace every MouseTip instance
+- When a custom selector is passed into the settings, MouseTip will look for attributes with that new namespace (i.e. "awesomeName" instead of "mousetip", "awesomeName-css-zindex" instead of "mousetip-css-zindex")
+- See the *How to Use* section to see this new setting in action
+
 ### Version 1.0.1
 Simple bug fixes:
 - Updated the bindMouseMove function to utilize pageX/pageY instead of clientX/clientY
@@ -56,12 +62,13 @@ In addition to the per-element adjustments above, you can also set global adjust
         cssBorderRadius: '15px', // Default: '4px'
         cssBackground: 'white', // Default: 'rgba(0,0,0,0.75)'
         cssColor: 'black', // Default: '#fff'
-        position: 'top left' // Default: 'bottom right'
+        position: 'top left', // Default: 'bottom right'
+        selector: 'awesomeName' // Default: 'mousetip'
     });
     mouseTip.run();
 </script>
 ```
-This will globally affect all MouseTips. Keep in mind that inline/attribute adjustments will supersede global adjustments.
+This will globally affect all MouseTips of that instance. Keep in mind that inline/attribute adjustments will supersede global adjustments.
 
 ## How to Build
 If you're like me, and want to tweak the source files of the script yourself, you can easily get going by doing the following:
