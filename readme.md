@@ -72,9 +72,11 @@ This will globally affect all MouseTips of that instance. Keep in mind that inli
 
 ## How to Build
 If you're like me, and want to tweak the source files of the script yourself, you can easily get going by doing the following:
+
 1. Clone or download the repo
 2. Run `$ npm install` to download the build dependencies
+
 Now, if you want to build while your working, simply run `$ gulp` or `$ gulp watch`, or if you want to build it out directly, run `$ gulp build`.
 
 ## Feedback
-If you run into any problems when using this script, would like to suggest new features for this script, or need help in understanding out how to use this script, please contact me via email at [jeisner93@gmail.com](mailto:jeisner93@gmail.com) or via GitHub [@joeleisner](https://github.com/joeleisner)
+If you run into any problems when using this script, would like to suggest new features for this script, or need help understanding how to use this script, please contact me via email at [jeisner93@gmail.com](mailto:jeisner93@gmail.com) or via GitHub [@joeleisner](https://github.com/joeleisner)
