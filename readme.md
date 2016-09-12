@@ -3,7 +3,7 @@ A pure javascript solution for creating tooltips that follow your mouse. This pr
 
 ![A demonstration of the javascript in action](http://joeleisner.com/github/screenshots/purejs-mousetip/purejs-moustip-demo.gif)
 
-## Version 1.2.0
+## Version 1.2.0 - HTML Messages
 Added HTML capabilities within MouseTip messages!
 - By default, MouseTip runs with HTML capabilities turned off.
 - HTML capabilities can be enabled globally via `html: true` in the global settings object
