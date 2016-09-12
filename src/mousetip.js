@@ -1,5 +1,5 @@
 function MouseTip(userSettings) {
-    // Select all elements with the attribute 'mouse-tip', and accept user-defined render settings or constructor defaults
+    // Select all elements with the attribute 'mousetip' (or user-specified selector), and accept user-defined render settings or constructor defaults
     var userSettings = userSettings || {},
         settings = {
             cssZIndex: userSettings.cssZIndex || '9999',
@@ -8,6 +8,7 @@ function MouseTip(userSettings) {
             cssBorderRadius: userSettings.cssPosition || '4px',
             cssBackground: userSettings.cssBackground || 'rgba(0,0,0,0.75)',
             cssColor: userSettings.cssColor || '#fff',
+            html: userSettings.html || false,
             position: userSettings.position || 'bottom right',
             selector: userSettings.selector || 'mousetip'
         },
