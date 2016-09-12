@@ -3,23 +3,13 @@ A pure javascript solution for creating tooltips that follow your mouse. This pr
 
 ![A demonstration of the javascript in action](http://joeleisner.com/github/screenshots/purejs-mousetip/purejs-moustip-demo.gif)
 
-## Change Log
-### Version 1.1.0
-Added new MouseTip constructor setting **selector**
-- Now you can namespace every MouseTip instance
-- When a custom selector is passed into the settings, MouseTip will look for attributes with that new namespace (i.e. "awesomeName" instead of "mousetip", "awesomeName-css-zindex" instead of "mousetip-css-zindex")
-- Check out the *How to Use* section to see this new setting in action
+## Version 1.2.0
+Added HTML capabilities within MouseTip messages!
+- By default, MouseTip runs with HTML capabilities turned off.
+- HTML capabilities can be enabled globally via `html: true` in the global settings object
+- HTML capabilities can be enabled/disabled individually via the `mousetip-enable-html` or `mousetip-disable-html` attribute
 
-### Version 1.0.1
-Simple bug fixes:
-- Updated the bindMouseMove function to utilize pageX/pageY instead of clientX/clientY
-- Fixed missing-semicolon JSHint warnings in the mousetip script
-
-### Version 1.0.0
-Version 1.0.0 is here, and it includes an entirely new way to use the PureJS MouseTip script!
-- The script is now wrapped in a MouseTip constructor function instead of a self-executing function
-- The script can now take global style/position overrides when an instance of the constructor is created
-- The script will not find the MouseTip elements or bind mouse events until a constructor instance's .run() function is called
+Read about previous version changes in the [changelog](changelog.md)
 
 ## Installation
 Simply include the `mousetip.js` or `mousetip.min.js` script at the bottom of your document. Than initialize it by creating a new MouseTip instance, and calling .run() on it. That's it!
@@ -48,6 +38,7 @@ Attribute | Description | Default | Example
 `moutstip-css-borderradius` | Alters the CSS border-radius of the tooltip | `4px` | `<div mousetip mousetip-msg="Message" mousetip-css-borderradius="15px"></div>`
 `mousetip-css-background` | Alters the CSS background color of the tooltip | `rgba(0,0,0,0.75)` | `<div mousetip mousetip-msg="Message" mousetip-css-background="white"></div>`
 `mousetip-css-color` | Alters the CSS text color of the tooltip | `#fff` | `<div mousetip mousetip-msg="Message" mousetip-css-color="black"></div>`
+`mousetip-enable-html` or `mousetip-disable-html` | Enables/disables the use of valid HTML within the tooltip message. | `false` | `<div mousetip mousetip-msg="<strong>Message</strong>" mousetip-enable-html></div>`
 
 These inline/attribute adjustments will supersede default and user-set global settings.
 
@@ -62,6 +53,7 @@ In addition to the per-element adjustments above, you can also set global adjust
         cssBorderRadius: '15px', // Default: '4px'
         cssBackground: 'white', // Default: 'rgba(0,0,0,0.75)'
         cssColor: 'black', // Default: '#fff'
+        html: true, // Default: false
         position: 'top left', // Default: 'bottom right'
         selector: 'awesomeName' // Default: 'mousetip'
     });
