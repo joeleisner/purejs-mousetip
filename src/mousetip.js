@@ -1,21 +1,22 @@
 function MouseTip(userSettings) {
     // Select all elements with the attribute 'mousetip' (or user-specified selector), and accept user-defined render settings or constructor defaults
-    var userSettings = userSettings || {},
+    var config = userSettings || {},
         settings = {
-            cssZIndex: userSettings.cssZIndex || '9999',
-            cssPosition: userSettings.cssPosition || 'absolute',
-            cssPadding: userSettings.cssPosition || '15px',
-            cssBorderRadius: userSettings.cssPosition || '4px',
-            cssBackground: userSettings.cssBackground || 'rgba(0,0,0,0.75)',
-            cssColor: userSettings.cssColor || '#fff',
-            html: userSettings.html || false,
-            position: userSettings.position || 'bottom right',
-            selector: userSettings.selector || 'mousetip'
-        },
-        elements = document.querySelectorAll('[' + settings.selector + ']');
+            cssZIndex: config.cssZIndex || '9999',
+            cssPosition: config.cssPosition || 'absolute',
+            cssPadding: config.cssPosition || '15px',
+            cssBorderRadius: config.cssPosition || '4px',
+            cssBackground: config.cssBackground || 'rgba(0,0,0,0.75)',
+            cssColor: config.cssColor || '#fff',
+            html: config.html || true,
+            position: config.position || 'bottom right',
+            selector: config.selector || 'mousetip'
+        };
     // Run Function
     this.run = function() {
-        // For each element selected...
+        // Select all elements...
+        var elements = document.querySelectorAll('[' + settings.selector + ']');
+        // ... and for each...
         for (var i = 0; i < elements.length; i++) {
             var element = elements[i];
             // ... bind it to events triggered by 'mouseenter', 'mouseleave', and 'mousemove'
@@ -25,7 +26,5 @@ function MouseTip(userSettings) {
         }
     };
 
-    //=include ./modules/bind-mouse-enter.js
-    //=include ./modules/bind-mouse-leave.js
-    //=include ./modules/bind-mouse-move.js
+    //=require modules/*
 }

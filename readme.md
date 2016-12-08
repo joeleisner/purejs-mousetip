@@ -3,15 +3,28 @@ A pure javascript solution for creating tooltips that follow your mouse. This pr
 
 ![A demonstration of the javascript in action](http://joeleisner.com/github/screenshots/purejs-mousetip/purejs-moustip-demo.gif)
 
-## Version 1.2.0 - HTML Messages
+## Changelog
+
+### [Version 1.2.1 - Bug Fixes & Optimizations](https://github.com/joeleisner/purejs-mousetip/releases/tag/v1.2.1)
+Minor updates have been made. Here's what's changed:
+* MouseTip can now be installed by NPM! (Check out the Installation section)
+* By default, MouseTip now runs with HTML capabilities turned on
+* Elements are not selected until `this.run()` is called
+* Linting warnings squashed
+* Build system optimized
+
+### [Version 1.2.0 - HTML Messages](https://github.com/joeleisner/purejs-mousetip/releases/tag/v1.2.0)
 Added HTML capabilities within MouseTip messages!
-- By default, MouseTip runs with HTML capabilities turned off.
-- HTML capabilities can be enabled globally via `html: true` in the global settings object
-- HTML capabilities can be enabled/disabled individually via the `mousetip-enable-html` or `mousetip-disable-html` attribute
+* By default, MouseTip runs with HTML capabilities turned off
+* HTML capabilities can be enabled globally via `html: true` in the global settings object
+* HTML capabilities can be enabled/disabled individually via the `mousetip-enable-html` or `mousetip-disable-html` attribute
 
 Read about previous version changes in the [changelog](changelog.md)
 
 ## Installation
+```bash
+$ npm install purejs-mousetip
+```
 Simply include the `mousetip.js` or `mousetip.min.js` script at the bottom of your document. Than initialize it by creating a new MouseTip instance, and calling .run() on it. That's it!
 ```html
 <script src="mousetip.min.js"></script>
@@ -68,7 +81,7 @@ If you're like me, and want to tweak the source files of the script yourself, yo
 1. Clone or download the repo
 2. Run `$ npm install` to download the build dependencies
 
-Now, if you want to build while your working, simply run `$ gulp` or `$ gulp watch`, or if you want to build it out directly, run `$ gulp build`.
+Now, if you want to build while your working, simply run `$ gulp` or `$ gulp watch`, or if you want to build it out directly, run `$ gulp compile`.
 
 ## Feedback
 If you run into any problems when using this script, would like to suggest new features for this script, or need help understanding how to use this script, please contact me via email at [jeisner93@gmail.com](mailto:jeisner93@gmail.com) or via GitHub [@joeleisner](https://github.com/joeleisner)
