@@ -1,6 +1,6 @@
 {
   "name": "purejs-mousetip",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "A pure javascript solution for creating tooltips that follow your mouse",
   "main": "gulpfile.js",
   "repository": {
@@ -9,6 +9,11 @@
   },
   "author": "Joel Eisner <jeisner93@gmail.com>",
   "homepage": "http://joeleisner.com/purejs-mousetip",
+  "keywords": [
+      "mousetip",
+      "tooltip",
+      "tooltips"
+  ],
   "license": "MIT",
   "devDependencies": {
     "gulp": "^3.9.1",
