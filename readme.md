@@ -51,7 +51,7 @@ Attribute | Description | Default | Example
 `moutstip-css-borderradius` | Alters the CSS border-radius of the tooltip | `4px` | `<div mousetip mousetip-msg="Message" mousetip-css-borderradius="15px"></div>`
 `mousetip-css-background` | Alters the CSS background color of the tooltip | `rgba(0,0,0,0.75)` | `<div mousetip mousetip-msg="Message" mousetip-css-background="white"></div>`
 `mousetip-css-color` | Alters the CSS text color of the tooltip | `#fff` | `<div mousetip mousetip-msg="Message" mousetip-css-color="black"></div>`
-`mousetip-enable-html` or `mousetip-disable-html` | Enables/disables the use of valid HTML within the tooltip message. | `false` | `<div mousetip mousetip-msg="<strong>Message</strong>" mousetip-enable-html></div>`
+`mousetip-enable-html` or `mousetip-disable-html` | Enables/disables the use of valid HTML within the tooltip message. | `true` | `<div mousetip mousetip-msg="<strong>Message</strong>" mousetip-enable-html></div>`
 
 These inline/attribute adjustments will supersede default and user-set global settings.
 
@@ -60,15 +60,15 @@ In addition to the per-element adjustments above, you can also set global adjust
 <script src="mousetip.min.js"></script>
 <script>
     var mouseTip = new MouseTip({
-        cssZIndex: '1000', // Default: '9999'
+        cssZIndex: '1000',       // Default: '9999'
         cssPosition: 'relative', // Default: 'absolute'
-        cssPadding: '30px', // Default: '15px'
+        cssPadding: '30px',      // Default: '15px'
         cssBorderRadius: '15px', // Default: '4px'
-        cssBackground: 'white', // Default: 'rgba(0,0,0,0.75)'
-        cssColor: 'black', // Default: '#fff'
-        html: true, // Default: false
-        position: 'top left', // Default: 'bottom right'
-        selector: 'awesomeName' // Default: 'mousetip'
+        cssBackground: 'white',  // Default: 'rgba(0,0,0,0.75)'
+        cssColor: 'black',       // Default: '#fff'
+        html: false,             // Default: true
+        position: 'top left',    // Default: 'bottom right'
+        selector: 'awesomeName'  // Default: 'mousetip'
     });
     mouseTip.run();
 </script>
