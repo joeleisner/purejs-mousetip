@@ -1,6 +1,6 @@
 {
   "name": "purejs-mousetip",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "A pure javascript solution for creating tooltips that follow your mouse",
   "main": "gulpfile.js",
   "repository": {
