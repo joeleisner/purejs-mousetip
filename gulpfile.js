@@ -12,7 +12,7 @@ gulp.task('default', ['watch']);
 gulp.task('watch', () => gulp.watch(config.watch, ['compile']));
 
 // Compile
-gulp.task('compile', ['clean'], () => {
+gulp.task('compile', () => {
     return gulp.src(config.src)        // Input
         .pipe(include())               // Include modules
         .pipe(header())                // Header
