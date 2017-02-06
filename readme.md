@@ -5,6 +5,9 @@ A pure javascript solution for creating tooltips that follow your mouse. This pr
 
 ## Changelog
 
+### [Version 1.2.3 - NPM Publish Issues](https://github.com/joeleisner/purejs-mousetip/releases/tag/v1.2.3)
+This release is exactly the same as 1.2.2, except with the version number incremented up by one. Unfortunately, I had mistakenly published a version 1.2.2 a while back and cannot overwrite this unpublished version. Instead of letting release versions get out of sync between the repo and the NPM package, I'm pushing this change to set things straight again.
+
 ### [Version 1.2.2 - Build System Improvements](https://github.com/joeleisner/purejs-mousetip/releases/tag/v1.2.2)
 This update includes some build-system improvements:
 * All build-system javascript now utilizes ES2015 (ES6) syntax
