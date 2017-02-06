@@ -1,5 +1,10 @@
 # Change Log
 
+### [Version 1.2.2 - Build System Improvements](https://github.com/joeleisner/purejs-mousetip/releases/tag/v1.2.2)
+This update includes some build-system improvements:
+* All build-system javascript now utilizes ES2015 (ES6) syntax
+* Removed the `clean` task from Gulp
+
 ### [Version 1.2.1 - Bug Fixes & Optimizations](https://github.com/joeleisner/purejs-mousetip/releases/tag/v1.2.1)
 Minor updates have been made. Here's what's changed:
 * MouseTip can now be installed by NPM! (Check out the Installation section)
