@@ -1,5 +1,5 @@
 module.exports = {
-    dest: 'dist',
-    src: 'src/mousetip.js',
+    dest:  'dist',
+    src:   'src/mousetip.js',
     watch: 'src/**/*.js'
 };
