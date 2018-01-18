@@ -1,3 +1,3 @@
 const rename = require('gulp-rename');
 
-module.exports = () => rename({ suffix: '.min' });
+module.exports = (suffix) => rename({ suffix: suffix || '.min' });
