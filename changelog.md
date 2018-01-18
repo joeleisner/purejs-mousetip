@@ -1,5 +1,14 @@
 # Change Log
 
+### [Version 2.0.0 - ES2015 Rebuild & New Features](https://github.com/joeleisner/purejs-mousetip/releases/tag/v2.0.0)
+Version 2.0.0 was rebuilt from the ground up to add new features. Here's some of the changes:
+* The main MouseTip constructor function is now an ES2015 class, making for easier code management and shifting towards more modern JS engines. While the default scripts (`mousetip.js` and `mousetip.min.js`) are still compatible with older browsers (transpiled using Babel.js), the ES2015 versions (`mousetip.es2015.js` and `mousetip.es2015.min.js`) will become the default in a later release.
+* A bug was fixed where certain user-set CSS settings were not mapped properly to the constructor's settings.
+* The `run()` method was renamed to `start()` to make more sense with the new method addition below
+* A new `stop()` method was added to stop all mousetip functionality at any time
+* A new `stylesheet` constructor setting was added (false by default). This allows you to specify not to include inline styles on the mousetip element, and instead expect the styling to be included in a stylesheet on the page. Element attributes will still work in this mode.
+* The build system has been reworked, include upgraded/new dependencies and a change of structure. The most noticeable change is that the default scripts are now built with Babel.js; While this leads to larger file sizes, it allows for future-proofing our script and ensures more browser support with less testing.
+
 ### [Version 1.2.3 - NPM Publish Issues](https://github.com/joeleisner/purejs-mousetip/releases/tag/v1.2.3)
 This release is exactly the same as 1.2.2, except with the version number incremented up by one. Unfortunately, I had mistakenly published a version 1.2.2 a while back and cannot overwrite this unpublished version. Instead of letting release versions get out of sync between the repo and the NPM package, I'm pushing this change to set things straight again.
 
