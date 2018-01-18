@@ -2,7 +2,7 @@ class MouseTip {
 
     // Construct the class
     constructor(settings) {
-        // Define default settings if not provided...
+        // Define default settings if not provided,...
         const {
             cssZIndex        = '9999',
             cssPosition      = 'absolute',
@@ -12,18 +12,24 @@ class MouseTip {
             cssColor         = '#fff',
             html             = true,
             position         = 'bottom right',
-            selector         = 'mousetip'
+            selector         = 'mousetip',
+            stylesheet       = false
         } = settings || {};
-        // ... and assign them to the class
-        this.cssZIndex       = cssZIndex;
-        this.cssPosition     = cssPosition;
-        this.cssPadding      = cssPadding;
-        this.cssBorderRadius = cssBorderRadius;
-        this.cssBackground   = cssBackground;
-        this.cssColor        = cssColor;
+        // ... assign them to the class,...
         this.html            = html;
         this.position        = position;
         this.selector        = selector;
+        this.stylesheet      = stylesheet;
+        // ... and if a stylesheet has not been enabled...
+        if (!this.stylesheet) {
+            // ... assign the CSS settings to the class as well
+            this.cssZIndex       = cssZIndex;
+            this.cssPosition     = cssPosition;
+            this.cssPadding      = cssPadding;
+            this.cssBorderRadius = cssBorderRadius;
+            this.cssBackground   = cssBackground;
+            this.cssColor        = cssColor;
+        }
         // Store the state of the mousetip
         this.mouseTip = false;
     }
