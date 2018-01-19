@@ -5,6 +5,11 @@ A pure javascript solution for creating tooltips that follow your mouse. This pr
 
 ## Latest Release
 
+### [Version 2.0.1 - Bug Fixes & Optimizations](https://github.com/joeleisner/purejs-mousetip/releases/tag/v2.0.0)
+This version is a minor update to fix/optimize a few things:
+* Fixed a bug that would break mousetip positions set in element attributes when hovering over a child element of the target.
+* Changed the constructor's mousetip state to store a DOM reference to the mousetip itself, removing two `document.getElementById(this.selector)` calls.
+
 ### [Version 2.0.0 - ES2015 Rebuild & New Features](https://github.com/joeleisner/purejs-mousetip/releases/tag/v2.0.0)
 Version 2.0.0 was rebuilt from the ground up to add new features. Here's some of the changes:
 * The main MouseTip constructor function is now an ES2015 class, making for easier code management and shifting towards more modern JS engines. While the default scripts (`mousetip.js` and `mousetip.min.js`) are still compatible with older browsers (using Babel.js), the ES2015 versions (`mousetip.es2015.js` and `mousetip.es2015.min.js`) will become the default in a later release.
