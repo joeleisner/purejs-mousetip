@@ -1,4 +1,6 @@
+.babelrc
 .DS_Store
+.eslintrc.js
 .git/
 .gitignore
 gulp/
