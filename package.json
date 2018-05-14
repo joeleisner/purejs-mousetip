@@ -24,6 +24,7 @@
     "gulp": "^3.9.1",
     "gulp-babel": "^7.0.1",
     "gulp-header": "^2.0.5",
+    "gulp-inject-string": "^1.1.1",
     "gulp-rename": "^1.2.2",
     "gulp-uglify": "^3.0.0",
     "gulp-uglifyes": "^0.1.3"
