@@ -5,19 +5,11 @@ A pure javascript solution for creating tooltips that follow your mouse. This pr
 
 ## Latest Release
 
-### [Version 2.0.1 - Bug Fixes & Optimizations](https://github.com/joeleisner/purejs-mousetip/releases/tag/v2.0.0)
-This version is a minor update to fix/optimize a few things:
-* Fixed a bug that would break mousetip positions set in element attributes when hovering over a child element of the target.
-* Changed the constructor's mousetip state to store a DOM reference to the mousetip itself, removing two `document.getElementById(this.selector)` calls.
-
-### [Version 2.0.0 - ES2015 Rebuild & New Features](https://github.com/joeleisner/purejs-mousetip/releases/tag/v2.0.0)
-Version 2.0.0 was rebuilt from the ground up to add new features. Here's some of the changes:
-* The main MouseTip constructor function is now an ES2015 class, making for easier code management and shifting towards more modern JS engines. While the default scripts (`mousetip.js` and `mousetip.min.js`) are still compatible with older browsers (using Babel.js), the ES2015 versions (`mousetip.es2015.js` and `mousetip.es2015.min.js`) will become the default in a later release.
-* A bug was fixed where certain user-set CSS settings were not mapped properly to the constructor's settings.
-* The `run()` method was renamed to `start()` to make more sense with the new method addition below
-* A new `stop()` method was added to stop all mousetip functionality at any time
-* A new `stylesheet` constructor setting was added (false by default). This allows you to specify not to include inline styles on the mousetip element, and instead expect the styling to be included in a stylesheet on the page. Element attributes will still work in this mode.
-* The build system has been reworked, include upgraded/new dependencies and a change of structure. The most noticeable change is that the default scripts are now built with Babel.js; While this leads to larger file sizes, it allows for future-proofing our script and ensures more browser support with less testing.
+### [Version 2.1.0 - CommonJS & ES2015 Modules](https://github.com/joeleisner/purejs-mousetip/releases/tag/v2.1.0)
+This version now includes CommonJS & ES2015 modules to more easily include Pure JS MouseTip into your projects! Here's the details:
+* Modules can be found in the `dist/modules` directory
+* The CommonJS module exports the class as: `module.exports = MouseTip;`
+* The ES2015 module exports the class as: `export default MouseTip;`
 
 Read about previous releases in the [changelog](changelog.md).
 
@@ -87,7 +79,7 @@ If you're like me, and want to tweak the source files of the script yourself, yo
 1. Clone or download the repo
 2. Run `$ npm install` to download the build dependencies
 
-Now, if you want to build while your working, simply run `$ gulp` or `$ gulp watch`, or if you want to build it out directly, run `$ gulp build`. If you'd like to build the legacy/es2015 versions independently, you can run `$ gulp build-legacy` or `$ gulp build-es2015` accordingly.
+Now, if you want to build while your working, simply run `$ gulp` or `$ gulp watch`, or if you want to build it out directly, run `$ gulp build`. If you'd like to build the legacy/es2015 versions independently, you can run `$ gulp build-legacy` or `$ gulp build-es2015` accordingly. All modules can be built by using `$ gulp build-modules`, or individually by using `$ gulp build-commonjs-module` or `$ gulp build-es2015-module`.
 
 ## Feedback
 If you run into any problems when using this script, would like to suggest new features for this script, or need help understanding how to use this script, please put in an issue or make a pull request.

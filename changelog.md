@@ -1,6 +1,12 @@
 # Change Log
 
-### [Version 2.0.1 - Bug Fixes & Optimizations](https://github.com/joeleisner/purejs-mousetip/releases/tag/v2.0.0)
+### [Version 2.1.0 - CommonJS & ES2015 Modules](https://github.com/joeleisner/purejs-mousetip/releases/tag/v2.1.0)
+This version now includes CommonJS & ES2015 modules to more easily include Pure JS MouseTip into your projects! Here's the details:
+* Modules can be found in the `dist/modules` directory
+* The CommonJS module exports the class as: `module.exports = MouseTip;`
+* The ES2015 module exports the class as: `export default MouseTip;`
+
+### [Version 2.0.1 - Bug Fixes & Optimizations](https://github.com/joeleisner/purejs-mousetip/releases/tag/v2.0.1)
 This version is a minor update to fix/optimize a few things:
 * Fixed a bug that would break mousetip positions set in element attributes when hovering over a child element of the target.
 * Changed the constructor's mousetip state to store a DOM reference to the mousetip itself, removing two `document.getElementById(this.selector)` calls.
