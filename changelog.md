@@ -1,5 +1,10 @@
 # Change Log
 
+### [Version 2.1.1 - Security Vulnerability Fixes](https://github.com/joeleisner/purejs-mousetip/releases/tag/v2.1.1)
+This minor update includes some fixes related to security vulnerabilities! Here's the details:
+* Gulp was updated to 4.0 to fix security vulnerabilities
+* The build-system was restructured to work with the new version of Gulp
+
 ### [Version 2.1.0 - CommonJS & ES2015 Modules](https://github.com/joeleisner/purejs-mousetip/releases/tag/v2.1.0)
 This version now includes CommonJS & ES2015 modules to more easily include Pure JS MouseTip into your projects! Here's the details:
 * Modules can be found in the `dist/modules` directory

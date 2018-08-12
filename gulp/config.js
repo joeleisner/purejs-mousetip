@@ -2,8 +2,8 @@ module.exports = {
     dest:    'dist',
     modules: {
         append: {
-            commonjs: '\nmodule.exports = MouseTip;',
-            es2015:   '\nexport default MouseTip;'
+            common: '\nmodule.exports = MouseTip;',
+            es2015: '\nexport default MouseTip;'
         },
         dest:   'dist/modules'
     },
