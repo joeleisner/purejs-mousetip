@@ -5,6 +5,10 @@ A pure javascript solution for creating tooltips that follow your mouse. This pr
 
 ## Latest Release
 
+### [Version 2.1.2 - Gulp Watch Fix](https://github.com/joeleisner/purejs-mousetip/releases/tag/v2.1.2)
+Another minor update in the same day? Yeah, I made a mistake; Here's what I fixed:
+* The build-system's `gulp watch` task is now working
+
 ### [Version 2.1.1 - Security Vulnerability Fixes](https://github.com/joeleisner/purejs-mousetip/releases/tag/v2.1.1)
 This minor update includes some fixes related to security vulnerabilities! Here's the details:
 * Gulp was updated to 4.0 to fix security vulnerabilities
