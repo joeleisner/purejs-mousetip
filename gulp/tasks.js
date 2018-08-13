@@ -45,6 +45,6 @@ module.exports = {
     },
     watch() {
         const { all } = this;
-        gulp.watch(config.watch, all());
+        return () => gulp.watch(config.watch, all.bind(this)());
     }
 };
