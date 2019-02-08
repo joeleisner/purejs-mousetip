@@ -5,6 +5,11 @@ A pure javascript solution for creating tooltips that follow your mouse. This pr
 
 ## Latest Release
 
+### [Version 2.1.3 - Security Vulnerability Fixes](https://github.com/joeleisner/purejs-mousetip/releases/tag/v2.1.3)
+This patch update includes updated dependencies due to isses with Lodash < 4.17.11. Here's the details:
+* Updated gulp-babel, gulp-header, gulp-inject-string, gulp-rename, gulp-uglify, and gulp-uglifyes to their latest versions
+* Swapped babel-core and babel-preset-env with @babel/core @babel/preset-env, which required updating the Babel RC file
+
 ### [Version 2.1.2 - Gulp Watch Fix](https://github.com/joeleisner/purejs-mousetip/releases/tag/v2.1.2)
 Another minor update in the same day? Yeah, I made a mistake; Here's what I fixed:
 * The build-system's `gulp watch` task is now working
