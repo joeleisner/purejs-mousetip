@@ -20,16 +20,15 @@ class MouseTip {
         this.position        = position;
         this.selector        = selector;
         this.stylesheet      = stylesheet;
-        // ... and if a stylesheet has not been enabled...
-        if (!this.stylesheet) {
-            // ... assign the CSS settings to the class as well
-            this.cssZIndex       = cssZIndex;
-            this.cssPosition     = cssPosition;
-            this.cssPadding      = cssPadding;
-            this.cssBorderRadius = cssBorderRadius;
-            this.cssBackground   = cssBackground;
-            this.cssColor        = cssColor;
-        }
+        // ... and if a stylesheet has been enabled, do nothing
+        if (this.stylesheet) return;
+        // Otherwise, assign the CSS settings to the class as well
+        this.cssZIndex       = cssZIndex;
+        this.cssPosition     = cssPosition;
+        this.cssPadding      = cssPadding;
+        this.cssBorderRadius = cssBorderRadius;
+        this.cssBackground   = cssBackground;
+        this.cssColor        = cssColor;
     }
 
     // Create the mousetip
