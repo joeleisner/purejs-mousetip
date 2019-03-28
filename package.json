@@ -8,6 +8,15 @@
     "url": "https://github.com/joeleisner/purejs-mousetip"
   },
   "author": "Joel Eisner <jeisner93@gmail.com>",
+  "scripts": {
+    "build-es2015": "npx gulp build-es2015",
+    "build-legacy": "npx gulp build-legacy",
+    "build": "npx gulp build",
+    "build-commonjs-module": "npx gulp build-commonjs-module",
+    "build-es2015-module": "npx gulp build-es2015-module",
+    "build-modules": "npx gulp build-modules",
+    "watch": "npx gulp watch"
+  },
   "homepage": "http://joeleisner.com/purejs-mousetip",
   "keywords": [
     "javascript",
