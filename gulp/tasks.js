@@ -1,11 +1,11 @@
-const babel  = require('gulp-babel'),
-    config   = require('./config'),
-    gulp     = require('gulp'),
-    header   = require('./header'),
-    inject   = require('gulp-inject-string'),
-    rename   = require('./rename'),
-    uglify   = require('gulp-uglify'),
-    uglifyes = require('gulp-uglifyes');
+const babel = require('gulp-babel'),
+    config  = require('./config'),
+    gulp    = require('gulp'),
+    header  = require('./header'),
+    inject  = require('gulp-inject-string'),
+    rename  = require('./rename'),
+    terser  = require('gulp-terser'),
+    uglify  = require('gulp-uglify');
 
 function buildScript(type) {
     const { dest, src } = config;
@@ -13,7 +13,7 @@ function buildScript(type) {
         .pipe(type ? rename('.' + type) : babel())
         .pipe(header())
         .pipe(gulp.dest(dest))
-        .pipe(type ? uglifyes() : uglify())
+        .pipe(type ? terser() : uglify())
         .pipe(header(true))
         .pipe(rename())
         .pipe(gulp.dest(dest));
