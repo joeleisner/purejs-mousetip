@@ -5,6 +5,13 @@ A pure javascript solution for creating tooltips that follow your mouse. This pr
 
 ## Latest Release
 
+### [Version 2.1.4 - Minor upgrades](https://github.com/joeleisner/purejs-mousetip/releases/tag/v2.1.4)
+This patch update includes updated dependencies and a new setting for MouseTip:
+* Added npm scripts to alleviate the need for Gulp CLI to be installed globally
+* Updated Babel core/preset-env and Gulp to their latest versions
+* Replaced gulp-uglifyes with gulp-terser
+* Added the ability to set a default message within MouseTip's constructor function
+
 ### [Version 2.1.3 - Security Vulnerability Fixes](https://github.com/joeleisner/purejs-mousetip/releases/tag/v2.1.3)
 This patch update includes updated dependencies due to isses with Lodash < 4.17.11. Here's the details:
 * Updated gulp-babel, gulp-header, gulp-inject-string, gulp-rename, gulp-uglify, and gulp-uglifyes to their latest versions
@@ -74,6 +81,7 @@ In addition to the element attribute adjustments above, you can also set global 
         cssBackground:   'white',       // Default: 'rgba(0,0,0,0.75)'
         cssColor:        'black',       // Default: '#fff'
         html:            false,         // Default: true
+        msg:             'Message!',    // Default: ''
         position:        'top left',    // Default: 'bottom right'
         selector:        'awesomeName', // Default: 'mousetip'
         stylesheet:      true           // Default: false
