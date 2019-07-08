@@ -13,7 +13,7 @@ class MouseTip {
         position        = 'bottom right',
         selector        = 'mousetip',
         stylesheet      = false
-    }) {
+    } = {}) {
         // Assign the settings to the class,...
         this.html            = html;
         this.msg             = msg;
