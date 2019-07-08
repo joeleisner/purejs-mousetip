@@ -5,6 +5,13 @@ A pure javascript solution for creating tooltips that follow your mouse. This pr
 
 ## Latest Release
 
+### [Version 2.1.4 - Minor upgrades](https://github.com/joeleisner/purejs-mousetip/releases/tag/v2.1.4)
+This patch update includes updated dependencies and a new setting for MouseTip:
+* Added npm scripts to alleviate the need for Gulp CLI to be installed globally
+* Updated Babel core/preset-env and Gulp to their latest versions
+* Replaced gulp-uglifyes with gulp-terser
+* Added the ability to set a default message within MouseTip's constructor function
+
 ### [Version 2.1.3 - Security Vulnerability Fixes](https://github.com/joeleisner/purejs-mousetip/releases/tag/v2.1.3)
 This patch update includes updated dependencies due to isses with Lodash < 4.17.11. Here's the details:
 * Updated gulp-babel, gulp-header, gulp-inject-string, gulp-rename, gulp-uglify, and gulp-uglifyes to their latest versions
@@ -28,8 +35,8 @@ This version now includes CommonJS & ES2015 modules to more easily include Pure 
 Read about previous releases in the [changelog](changelog.md).
 
 ## Installation
-```bash
-$ npm install purejs-mousetip
+```shell
+npm i purejs-mousetip
 ```
 Simply include the `mousetip.js` or `mousetip.min.js` script at the bottom of your document. Than initialize it by creating a new MouseTip instance, and call `.start()` on it. That's it!
 ```html
@@ -74,6 +81,7 @@ In addition to the element attribute adjustments above, you can also set global 
         cssBackground:   'white',       // Default: 'rgba(0,0,0,0.75)'
         cssColor:        'black',       // Default: '#fff'
         html:            false,         // Default: true
+        msg:             'Message!',    // Default: ''
         position:        'top left',    // Default: 'bottom right'
         selector:        'awesomeName', // Default: 'mousetip'
         stylesheet:      true           // Default: false
@@ -90,10 +98,34 @@ The only global adjustments that do not have element attribute counterparts are 
 ## How to Build
 If you're like me, and want to tweak the source files of the script yourself, you can easily get going by doing the following:
 
-1. Clone or download the repo
-2. Run `$ npm install` to download the build dependencies
+### Installation
+```shell
+git clone git@github.com:joeleisner/purejs-mousetip.git
+cd purejs-mousetip
+npm i
+```
 
-Now, if you want to build while your working, simply run `$ gulp` or `$ gulp watch`, or if you want to build it out directly, run `$ gulp build`. If you'd like to build the legacy/es2015 versions independently, you can run `$ gulp build-legacy` or `$ gulp build-es2015` accordingly. All modules can be built by using `$ gulp build-modules`, or individually by using `$ gulp build-commonjs-module` or `$ gulp build-es2015-module`.
+### Development
+```shell
+# npm run * / npx gulp *
+
+# Build all script variants
+npm run build
+
+# Build specific, non-module scripts
+npm run build-es2015
+npm run build-legacy
+
+# Build all module scripts
+npm run build-modules
+
+# Build specific module scripts
+npm run build-commonjs-module
+npm run build-es2015-module
+
+# Build all script varianst while watching for changes
+npm run watch
+```
 
 ## Feedback
 If you run into any problems when using this script, would like to suggest new features for this script, or need help understanding how to use this script, please put in an issue or make a pull request.
