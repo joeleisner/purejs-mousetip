@@ -28,8 +28,8 @@
   ],
   "license": "MIT",
   "devDependencies": {
-    "@babel/core": "^7.5.0",
-    "@babel/preset-env": "^7.5.0",
+    "@babel/core": "^7.5.4",
+    "@babel/preset-env": "^7.5.4",
     "gulp": "^4.0.2",
     "gulp-babel": "^8.0.0",
     "gulp-header": "^2.0.7",
