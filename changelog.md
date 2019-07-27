@@ -1,5 +1,10 @@
 # Change Log
 
+## [Version 2.1.5 - Security Vulnerability Fixes](https://github.com/joeleisner/purejs-mousetip/releases/tag/v2.1.5)
+This patch includes updates dependencies due to security vulnerabilities:
+* Updated `@babel/core` and `@babel/preset-env` to their latest versions
+* Updated `gulp-header` to its latest version
+
 ## [Version 2.1.4 - Minor upgrades](https://github.com/joeleisner/purejs-mousetip/releases/tag/v2.1.4)
 This patch update includes updated dependencies and a new setting for MouseTip:
 * Added npm scripts to alleviate the need for Gulp CLI to be installed globally
