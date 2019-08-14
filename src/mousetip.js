@@ -14,6 +14,8 @@ class MouseTip {
         selector        = 'mousetip',
         stylesheet      = false
     } = {}) {
+        // Create a reference for all target elements
+        this.elements = [];
         // Assign the settings to the class,...
         this.html            = html;
         this.msg             = msg;
@@ -73,16 +75,16 @@ class MouseTip {
 
     // Delete the mousetip
     deleteMouseTip() {
-        // If the stored mousetip does not exist, return
-        if (!this.mouseTip) return;
-        // Delete the mousetip...
-        this.mouseTip.parentNode.removeChild(this.mouseTip);
-        // ... and delete the stored mousetip
-        delete this.mouseTip;
-        // If the stored target element does not exist, return
-        if (!this.element) return;
-        // Delete the stored target element
-        delete this.element;
+        // If a mousetip is stored,...
+        if (this.mouseTip) {
+            // ... remove it from the page...
+            this.mouseTip.parentNode.removeChild(this.mouseTip);
+            // ... and delete it
+            delete this.mouseTip;
+        }
+
+        // If a target element is stored, delete it
+        if (this.element) delete this.element;
     }
 
     // Update the mousetip
@@ -126,51 +128,34 @@ class MouseTip {
 
     // Handle mouse events
     handleEvent(event) {
-        switch (event.type) {
-        case 'mouseenter':
-            // When the mouse enters an element, create the mousetip
-            this.createMouseTip(event);
-            break;
-        case 'mouseleave':
-            // When the mouse leaves an element, delete the mousetip
-            this.deleteMouseTip();
-            break;
-        case 'mousemove':
-            // When the mouse moves inside an element, update the mousetip
-            this.updateMouseTip(event);
-        }
+        // If the target is not one of the stored reference elements, attempt to delete the mousetip
+        if (!this.elements.includes(event.target)) return this.deleteMouseTip();
+
+        // If no current target is stored, create the mousetip
+        if (!this.element) return this.createMouseTip(event);
+
+        // Otherwise, update the mousetip
+        return this.updateMouseTip(event);
     }
 
     // Start handling mouse events
     start() {
         // Grab all elements by selector
-        const elements = document.querySelectorAll(`[${ this.selector }]`);
+        const elements = Array.from(document.querySelectorAll(`[${ this.selector }]`));
         // If no elements were found, return
         if (!elements) return;
         // Store the elements for reference,...
         this.elements = elements;
-        // ... and for each,...
-        for (let i = 0; i < elements.length; i++) {
-            const element = elements[i];
-            // ... bind the mouse enter, leave, and move events
-            element.addEventListener('mouseenter', this, false);
-            element.addEventListener('mouseleave', this, false);
-            element.addEventListener('mousemove',  this, false);
-        }
+        // ... and bind to the document's mouse move events
+        document.addEventListener('mousemove', this, false);
     }
 
     // Stop handling mouse events
     stop() {
         // If no element references are stored, return
-        if (!this.elements || !this.elements.length) return;
-        // For each element...
-        for (let i = 0; i < this.elements.length; i++) {
-            const element = this.elements[i];
-            // ... unbind the mouse enter, leave, and move events
-            element.removeEventListener('mouseenter', this, false);
-            element.removeEventListener('mouseleave', this, false);
-            element.removeEventListener('mousemove',  this, false);
-        }
+        if (!this.elements.length) return;
+        // Unbind from the document's mouse move events
+        document.removeEventListener('mousemove', this, false);
         // Delete the stored element references...
         delete this.elements;
         // ... and the mousetip
