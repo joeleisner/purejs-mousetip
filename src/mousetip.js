@@ -33,6 +33,20 @@ class MouseTip {
         this.cssColor        = cssColor;
     }
 
+    // Delete the mousetip
+    deleteMouseTip() {
+        // If a mousetip is stored,...
+        if (this.mouseTip) {
+            // ... remove it from the page...
+            this.mouseTip.parentNode.removeChild(this.mouseTip);
+            // ... and delete it
+            delete this.mouseTip;
+        }
+
+        // If a target element is stored, delete it
+        if (this.element) delete this.element;
+    }
+
     // Create the mousetip
     createMouseTip(event) {
         // Store the target element
@@ -67,33 +81,27 @@ class MouseTip {
             // ... otherwise, append the message to the mousetip as HTML
             mouseTip.innerHTML = message;
         }
+
+        // Update the mousetip before rendering
+        this.updateMouseTip(event, mouseTip);
+
         // Append the mousetip to the bottom of the page...
         document.body.appendChild(mouseTip);
         // ... and store the mousetip
         this.mouseTip = document.getElementById(this.selector);
     }
 
-    // Delete the mousetip
-    deleteMouseTip() {
-        // If a mousetip is stored,...
-        if (this.mouseTip) {
-            // ... remove it from the page...
-            this.mouseTip.parentNode.removeChild(this.mouseTip);
-            // ... and delete it
-            delete this.mouseTip;
-        }
-
-        // If a target element is stored, delete it
-        if (this.element) delete this.element;
-    }
-
     // Update the mousetip
-    updateMouseTip(event) {
-        // Grab the X/Y of the mouse
-        const mouseX = event.pageX,
-            mouseY   = event.pageY;
-        // Set the default adjustment to 15
-        const defaultAdjust = 15;
+    updateMouseTip(event, reference) {
+        // Grab the X/Y of the mouse,...
+        const {
+                pageX: mouseX,
+                pageY: mouseY
+            }             = event,
+            // ... make the mousetip to update the passed in reference or the globally stored one,...
+            mouseTip      = reference || this.mouseTip,
+            // ... and set the default adjustment to 15
+            defaultAdjust = 15;
         // Get the mousetip position from the target element or the constructor
         let position = (this.element.getAttribute(this.selector + '-pos') || this.position).split(' '),
             verticalAdjust, horizontalAdjust;
@@ -122,8 +130,8 @@ class MouseTip {
             horizontalAdjust = defaultAdjust;
         }
         // Update the mousetip's position
-        this.mouseTip.style.top  = `${ mouseY + verticalAdjust }px`;
-        this.mouseTip.style.left = `${ mouseX + horizontalAdjust }px`;
+        mouseTip.style.top  = `${ mouseY + verticalAdjust }px`;
+        mouseTip.style.left = `${ mouseX + horizontalAdjust }px`;
     }
 
     // Handle mouse events
