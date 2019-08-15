@@ -13,7 +13,11 @@ class MouseTip {
         selector        = 'mousetip',
         stylesheet      = false
     } = {}) {
-        // Initialize an object to store the mousetip's element and attributes
+        // Initialize an array for all targets,...
+        this.targets = [];
+        // ... an empty string for a specific target,...
+        this.target = '';
+        // ... and an object to store the mousetip's element and attributes
         this.mouseTip = {};
 
         // Assign the settings to the class,...
@@ -45,7 +49,7 @@ class MouseTip {
         }
 
         // If a target element is stored, delete it
-        if (this.target) delete this.target;
+        if (this.target) this.target = '';
     }
 
     // Assign the mousetips attributes
@@ -184,8 +188,8 @@ class MouseTip {
         // Unbind from the document's mouse move events
         document.removeEventListener('mousemove', this, false);
 
-        // Delete the stored target elements for reference...
-        delete this.targets;
+        // Reset the stored target elements for reference...
+        this.targets = [];
         // ... and the mousetip
         this.deleteMouseTip();
     }
