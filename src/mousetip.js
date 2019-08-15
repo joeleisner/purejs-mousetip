@@ -49,8 +49,6 @@ class MouseTip {
 
     // Create the mousetip
     createMouseTip(event) {
-        // Store the target element
-        this.element = event.target;
         // Create the mousetip
         const mouseTip = document.createElement('span');
         // Store the styling either from the target element's attributes or the constructor settings
@@ -136,11 +134,19 @@ class MouseTip {
 
     // Handle mouse events
     handleEvent(event) {
-        // If the target is not one of the stored reference elements, attempt to delete the mousetip
-        if (!this.elements.includes(event.target)) return this.deleteMouseTip();
+        // Try and find the target in the stored reference elements
+        const match = this.elements.find(element => element.contains(event.target));
 
-        // If no current target is stored, create the mousetip
-        if (!this.element) return this.createMouseTip(event);
+        // If no target was found, attempt to delete the mousetip
+        if (!match) return this.deleteMouseTip();
+
+        // If no current target is stored,...
+        if (!this.element) {
+            // ... store it...
+            this.element = match;
+            // ... and create the mousetip
+            return this.createMouseTip(event);
+        }
 
         // Otherwise, update the mousetip
         return this.updateMouseTip(event);
