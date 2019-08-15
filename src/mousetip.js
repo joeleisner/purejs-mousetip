@@ -93,6 +93,7 @@ class MouseTip {
         this.mouseTip.element = document.createElement('span');
         // ... assign its ID and styling,...
         this.mouseTip.element.id                 = this.selector;
+        this.mouseTip.element.style.display      = 'none';
         this.mouseTip.element.style.zIndex       = this.mouseTip.attributes.cssZIndex;
         this.mouseTip.element.style.position     = this.mouseTip.attributes.cssPosition;
         this.mouseTip.element.style.padding      = this.mouseTip.attributes.cssPadding;
@@ -105,7 +106,7 @@ class MouseTip {
         // Append the mousetip to the bottom of the page...
         document.body.appendChild(this.mouseTip.element);
         // ... and update it's vertical/horizontal position
-        this.updateMouseTip(event);
+        window.requestAnimationFrame(() => this.updateMouseTip(event));
     }
 
     // Calculate the mousetip's vertical adjustment
@@ -124,6 +125,9 @@ class MouseTip {
 
     // Update the mousetip
     updateMouseTip(event) {
+        // If the mousetip has no attributes or position, do nothing
+        if (!this.mouseTip.attributes || !this.mouseTip.attributes.position) return;
+
         // If the position does not contain two items, set it to the default
         if (this.mouseTip.attributes.position.length !== 2) this.mouseTip.attributes.position = [ 'bottom', 'right' ];
 
@@ -144,6 +148,9 @@ class MouseTip {
         // ... and update the mousetip's position
         this.mouseTip.element.style.top  = `${ pageY + this.mouseTip.attributes.verticalAdjustment }px`;
         this.mouseTip.element.style.left = `${ pageX + this.mouseTip.attributes.horizontalAdjustment }px`;
+
+        // If the mousetip is hidden, show it
+        if (this.mouseTip.element.style.display === 'none') this.mouseTip.element.style.display = 'inline-block';
     }
 
     // Handle mouse events
@@ -163,7 +170,7 @@ class MouseTip {
         }
 
         // Otherwise, update the mousetip
-        return this.updateMouseTip(event);
+        return window.requestAnimationFrame(() => this.updateMouseTip(event));
     }
 
     // Start handling mouse events
