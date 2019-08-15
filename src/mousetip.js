@@ -1,5 +1,4 @@
 class MouseTip {
-
     // Construct the class
     constructor({
         cssZIndex       = '9999',
@@ -14,8 +13,6 @@ class MouseTip {
         selector        = 'mousetip',
         stylesheet      = false
     } = {}) {
-        // Create a reference for all target elements
-        this.elements = [];
         // Assign the settings to the class,...
         this.html            = html;
         this.msg             = msg;
@@ -44,7 +41,7 @@ class MouseTip {
         }
 
         // If a target element is stored, delete it
-        if (this.element) delete this.element;
+        if (this.target) delete this.target;
     }
 
     // Create the mousetip
@@ -52,12 +49,12 @@ class MouseTip {
         // Create the mousetip
         const mouseTip = document.createElement('span');
         // Store the styling either from the target element's attributes or the constructor settings
-        const zIndex     = this.element.getAttribute(this.selector + '-css-zindex')       || this.cssZIndex,
-            position     = this.element.getAttribute(this.selector + '-css-position')     || this.cssPosition,
-            padding      = this.element.getAttribute(this.selector + '-css-padding')      || this.cssPadding,
-            borderRadius = this.element.getAttribute(this.selector + '-css-borderradius') || this.cssBorderRadius,
-            background   = this.element.getAttribute(this.selector + '-css-background')   || this.cssBackground,
-            color        = this.element.getAttribute(this.selector + '-css-color')        || this.cssColor;
+        const zIndex     = this.target.getAttribute(this.selector + '-css-zindex')       || this.cssZIndex,
+            position     = this.target.getAttribute(this.selector + '-css-position')     || this.cssPosition,
+            padding      = this.target.getAttribute(this.selector + '-css-padding')      || this.cssPadding,
+            borderRadius = this.target.getAttribute(this.selector + '-css-borderradius') || this.cssBorderRadius,
+            background   = this.target.getAttribute(this.selector + '-css-background')   || this.cssBackground,
+            color        = this.target.getAttribute(this.selector + '-css-color')        || this.cssColor;
         // Assign the ID and styling to the mousetip
         mouseTip.id                 = this.selector;
         mouseTip.style.zIndex       = zIndex;
@@ -67,10 +64,10 @@ class MouseTip {
         mouseTip.style.background   = background;
         mouseTip.style.color        = color;
         // Grab the message and HTML attributes from the event target
-        const message = this.element.getAttribute(this.selector + '-msg') || this.msg,
+        const message = this.target.getAttribute(this.selector + '-msg') || this.msg,
             html      = this.html ?
-                this.element.hasAttribute(this.selector + '-disable-html') :
-                this.element.hasAttribute(this.selector + '-enable-html');
+                this.target.hasAttribute(this.selector + '-disable-html') :
+                this.target.hasAttribute(this.selector + '-enable-html');
         // If HTML is disabled globally and on the target element (or the inverse)...
         if ((!this.html && !html) || (this.html && html)) {
             // ... append the message to the mousetip as a text-node...
@@ -101,7 +98,7 @@ class MouseTip {
             // ... and set the default adjustment to 15
             defaultAdjust = 15;
         // Get the mousetip position from the target element or the constructor
-        let position = (this.element.getAttribute(this.selector + '-pos') || this.position).split(' '),
+        let position = (this.target.getAttribute(this.selector + '-pos') || this.position).split(' '),
             verticalAdjust, horizontalAdjust;
         // If the position does not contain two items, set it to the default
         if (position.length !== 2) position = [ 'bottom', 'right' ];
@@ -135,15 +132,15 @@ class MouseTip {
     // Handle mouse events
     handleEvent(event) {
         // Try and find the target in the stored reference elements
-        const match = this.elements.find(element => element.contains(event.target));
+        const match = this.targets.find(target => target.contains(event.target));
 
         // If no target was found, attempt to delete the mousetip
         if (!match) return this.deleteMouseTip();
 
         // If no current target is stored,...
-        if (!this.element) {
+        if (!this.target) {
             // ... store it...
-            this.element = match;
+            this.target = match;
             // ... and create the mousetip
             return this.createMouseTip(event);
         }
@@ -154,12 +151,14 @@ class MouseTip {
 
     // Start handling mouse events
     start() {
-        // Grab all elements by selector
-        const elements = Array.from(document.querySelectorAll(`[${ this.selector }]`));
-        // If no elements were found, return
-        if (!elements) return;
-        // Store the elements for reference,...
-        this.elements = elements;
+        // Grab all target elements by selector
+        const targets = Array.from(document.querySelectorAll(`[${ this.selector }]`));
+
+        // If no target elements were found, do nothing
+        if (!targets) return;
+
+        // Store the target elements for reference,...
+        this.targets = targets;
         // ... and bind to the document's mouse move events
         document.addEventListener('mousemove', this, false);
     }
@@ -167,13 +166,14 @@ class MouseTip {
     // Stop handling mouse events
     stop() {
         // If no element references are stored, return
-        if (!this.elements.length) return;
+        if (!this.targets.length) return;
+
         // Unbind from the document's mouse move events
         document.removeEventListener('mousemove', this, false);
-        // Delete the stored element references...
-        delete this.elements;
+
+        // Delete the stored target elements for reference...
+        delete this.targets;
         // ... and the mousetip
         this.deleteMouseTip();
     }
-
 }
