@@ -13,6 +13,9 @@ class MouseTip {
         selector        = 'mousetip',
         stylesheet      = false
     } = {}) {
+        // Initialize an object to store the mousetip's element and attributes
+        this.mouseTip = {};
+
         // Assign the settings to the class,...
         this.html            = html;
         this.msg             = msg;
@@ -21,6 +24,7 @@ class MouseTip {
         this.stylesheet      = stylesheet;
         // ... and if a stylesheet has been enabled, do nothing more
         if (this.stylesheet) return;
+
         // Otherwise, assign the CSS settings to the class as well
         this.cssZIndex       = cssZIndex;
         this.cssPosition     = cssPosition;
@@ -33,100 +37,109 @@ class MouseTip {
     // Delete the mousetip
     deleteMouseTip() {
         // If a mousetip is stored,...
-        if (this.mouseTip) {
+        if (this.mouseTip.element) {
             // ... remove it from the page...
-            this.mouseTip.parentNode.removeChild(this.mouseTip);
-            // ... and delete it
-            delete this.mouseTip;
+            this.mouseTip.element.parentNode.removeChild(this.mouseTip.element);
+            // ... and reset it
+            this.mouseTip = {};
         }
 
         // If a target element is stored, delete it
         if (this.target) delete this.target;
     }
 
+    // Assign the mousetips attributes
+    setAttributes() {
+        // Override global attributes with target attributes if possible...
+        const cssZIndex     = this.target.getAttribute(this.selector + '-css-zindex')       || this.cssZIndex,
+            cssPosition     = this.target.getAttribute(this.selector + '-css-position')     || this.cssPosition,
+            cssPadding      = this.target.getAttribute(this.selector + '-css-padding')      || this.cssPadding,
+            cssBorderRadius = this.target.getAttribute(this.selector + '-css-borderradius') || this.cssBorderRadius,
+            cssBackground   = this.target.getAttribute(this.selector + '-css-background')   || this.cssBackground,
+            cssColor        = this.target.getAttribute(this.selector + '-css-color')        || this.cssColor,
+            html            = this.html ? 
+                this.target.hasAttribute(this.selector + '-disable-html') : 
+                this.target.hasAttribute(this.selector + '-enable-html'),
+            messageType     = (!this.html && !html) || (this.html && html) ? 
+                'textContent' : 
+                'innerHTML',
+            message         = this.target.getAttribute(this.selector + '-msg')              || this.msg,
+            position        = (this.target.getAttribute(this.selector + '-pos')             || this.position).split(' ');
+        // ... and assign them as the mousetip's attributes
+        this.mouseTip.attributes = {
+            cssZIndex,
+            cssPosition,
+            cssPadding,
+            cssBorderRadius,
+            cssBackground,
+            cssColor,
+            html,
+            messageType,
+            message,
+            position
+        };
+    }
+
     // Create the mousetip
     createMouseTip(event) {
-        // Create the mousetip
-        const mouseTip = document.createElement('span');
-        // Store the styling either from the target element's attributes or the constructor settings
-        const zIndex     = this.target.getAttribute(this.selector + '-css-zindex')       || this.cssZIndex,
-            position     = this.target.getAttribute(this.selector + '-css-position')     || this.cssPosition,
-            padding      = this.target.getAttribute(this.selector + '-css-padding')      || this.cssPadding,
-            borderRadius = this.target.getAttribute(this.selector + '-css-borderradius') || this.cssBorderRadius,
-            background   = this.target.getAttribute(this.selector + '-css-background')   || this.cssBackground,
-            color        = this.target.getAttribute(this.selector + '-css-color')        || this.cssColor;
-        // Assign the ID and styling to the mousetip
-        mouseTip.id                 = this.selector;
-        mouseTip.style.zIndex       = zIndex;
-        mouseTip.style.position     = position;
-        mouseTip.style.padding      = padding;
-        mouseTip.style.borderRadius = borderRadius;
-        mouseTip.style.background   = background;
-        mouseTip.style.color        = color;
-        // Grab the message and HTML attributes from the event target
-        const message = this.target.getAttribute(this.selector + '-msg') || this.msg,
-            html      = this.html ?
-                this.target.hasAttribute(this.selector + '-disable-html') :
-                this.target.hasAttribute(this.selector + '-enable-html');
-        // If HTML is disabled globally and on the target element (or the inverse)...
-        if ((!this.html && !html) || (this.html && html)) {
-            // ... append the message to the mousetip as a text-node...
-            mouseTip.appendChild(document.createTextNode(message));
-        } else {
-            // ... otherwise, append the message to the mousetip as HTML
-            mouseTip.innerHTML = message;
-        }
+        // Assign the mousetip's attributes
+        this.setAttributes();
 
-        // Update the mousetip before rendering
-        this.updateMouseTip(event, mouseTip);
+        // Create the mousetip,...
+        this.mouseTip.element = document.createElement('span');
+        // ... assign its ID and styling,...
+        this.mouseTip.element.id                 = this.selector;
+        this.mouseTip.element.style.zIndex       = this.mouseTip.attributes.cssZIndex;
+        this.mouseTip.element.style.position     = this.mouseTip.attributes.cssPosition;
+        this.mouseTip.element.style.padding      = this.mouseTip.attributes.cssPadding;
+        this.mouseTip.element.style.borderRadius = this.mouseTip.attributes.cssBorderRadius;
+        this.mouseTip.element.style.background   = this.mouseTip.attributes.cssBackground;
+        this.mouseTip.element.style.color        = this.mouseTip.attributes.cssColor;
+        // ... and add its message
+        this.mouseTip.element[this.mouseTip.attributes.messageType] = this.mouseTip.attributes.message;
 
         // Append the mousetip to the bottom of the page...
-        document.body.appendChild(mouseTip);
-        // ... and store the mousetip
-        this.mouseTip = document.getElementById(this.selector);
+        document.body.appendChild(this.mouseTip.element);
+        // ... and update it's vertical/horizontal position
+        this.updateMouseTip(event);
+    }
+
+    // Calculate the mousetip's vertical adjustment
+    calculateVerticalAdjustment(position) {
+        if (position === 'top')    return -15 - this.mouseTip.element.offsetHeight;
+        if (position === 'center') return -(this.mouseTip.element.offsetHeight / 2);
+        return 15;
+    }
+
+    // Calulate the mousetip's horizontal adjustment
+    calculateHorizontalAdjustment(position) {
+        if (position === 'left')   return -15 - this.mouseTip.element.offsetWidth;
+        if (position === 'center') return -(this.mouseTip.element.offsetWidth / 2);
+        return 15;
     }
 
     // Update the mousetip
-    updateMouseTip(event, reference) {
-        // Grab the X/Y of the mouse,...
-        const {
-                pageX: mouseX,
-                pageY: mouseY
-            }             = event,
-            // ... make the mousetip to update the passed in reference or the globally stored one,...
-            mouseTip      = reference || this.mouseTip,
-            // ... and set the default adjustment to 15
-            defaultAdjust = 15;
-        // Get the mousetip position from the target element or the constructor
-        let position = (this.target.getAttribute(this.selector + '-pos') || this.position).split(' '),
-            verticalAdjust, horizontalAdjust;
+    updateMouseTip(event) {
         // If the position does not contain two items, set it to the default
-        if (position.length !== 2) position = [ 'bottom', 'right' ];
-        // Set the vertical adjustment from the first item of position
-        switch(position[0]) {
-        case 'top':
-            verticalAdjust = -defaultAdjust - this.mouseTip.offsetHeight;
-            break;
-        case 'center':
-            verticalAdjust = 0 - (this.mouseTip.offsetHeight / 2);
-            break;
-        default:
-            verticalAdjust = defaultAdjust;
+        if (this.mouseTip.attributes.position.length !== 2) this.mouseTip.attributes.position = [ 'bottom', 'right' ];
+
+        // If the mousetip's vertical adjustment is not set,...
+        if (!this.mouseTip.attributes.verticalAdjustment) {
+            // ... calulate and store the vertical adjustment of the mousetip
+            this.mouseTip.attributes.verticalAdjustment = this.calculateVerticalAdjustment(this.mouseTip.attributes.position[0]);
         }
-        // Set the horizontal adjustment from the second item of position
-        switch(position[1]) {
-        case 'left':
-            horizontalAdjust = -defaultAdjust - this.mouseTip.offsetWidth;
-            break;
-        case 'center':
-            horizontalAdjust = 0 - (this.mouseTip.offsetWidth / 2);
-            break;
-        default:
-            horizontalAdjust = defaultAdjust;
+
+        // If the mousetip's horizontal adjustment is not set,...
+        if (!this.mouseTip.attributes.horizontalAdjustment) {
+            // ... calculate and store the horizontal adjustment of the mousetip
+            this.mouseTip.attributes.horizontalAdjustment = this.calculateHorizontalAdjustment(this.mouseTip.attributes.position[1]);
         }
-        // Update the mousetip's position
-        mouseTip.style.top  = `${ mouseY + verticalAdjust }px`;
-        mouseTip.style.left = `${ mouseX + horizontalAdjust }px`;
+
+        // Grab the X/Y of the mouse on the page...
+        const { pageX, pageY } = event;
+        // ... and update the mousetip's position
+        this.mouseTip.element.style.top  = `${ pageY + this.mouseTip.attributes.verticalAdjustment }px`;
+        this.mouseTip.element.style.left = `${ pageX + this.mouseTip.attributes.horizontalAdjustment }px`;
     }
 
     // Handle mouse events
