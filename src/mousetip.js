@@ -23,7 +23,7 @@ class MouseTip {
         // Assign the settings to the class,...
         this.html            = html;
         this.msg             = msg;
-        this.position        = position;
+        this.position        = position.split(' ');
         this.selector        = selector;
         this.stylesheet      = stylesheet;
         // ... and if a stylesheet has been enabled, do nothing more
@@ -55,20 +55,16 @@ class MouseTip {
     // Assign the mousetips attributes
     setAttributes() {
         // Override global attributes with target attributes if possible...
-        const cssZIndex     = this.target.getAttribute(this.selector + '-css-zindex')       || this.cssZIndex,
-            cssPosition     = this.target.getAttribute(this.selector + '-css-position')     || this.cssPosition,
-            cssPadding      = this.target.getAttribute(this.selector + '-css-padding')      || this.cssPadding,
-            cssBorderRadius = this.target.getAttribute(this.selector + '-css-borderradius') || this.cssBorderRadius,
-            cssBackground   = this.target.getAttribute(this.selector + '-css-background')   || this.cssBackground,
-            cssColor        = this.target.getAttribute(this.selector + '-css-color')        || this.cssColor,
-            html            = this.html ? 
-                this.target.hasAttribute(this.selector + '-disable-html') : 
-                this.target.hasAttribute(this.selector + '-enable-html'),
-            messageType     = (!this.html && !html) || (this.html && html) ? 
-                'textContent' : 
-                'innerHTML',
-            message         = this.target.getAttribute(this.selector + '-msg')              || this.msg,
-            position        = (this.target.getAttribute(this.selector + '-pos')             || this.position).split(' ');
+        const cssZIndex     = this.target.getAttribute(`${ this.selector }-css-zindex`)       || this.cssZIndex,
+            cssPosition     = this.target.getAttribute(`${ this.selector }-css-position`)     || this.cssPosition,
+            cssPadding      = this.target.getAttribute(`${ this.selector }-css-padding`)      || this.cssPadding,
+            cssBorderRadius = this.target.getAttribute(`${ this.selector }-css-borderradius`) || this.cssBorderRadius,
+            cssBackground   = this.target.getAttribute(`${ this.selector }-css-background`)   || this.cssBackground,
+            cssColor        = this.target.getAttribute(`${ this.selector }-css-color`)        || this.cssColor,
+            html            = this.target.hasAttribute(`${ this.selector }-${ this.html ? 'disable' : 'enable' }-html`),
+            messageType     = (!this.html && !html) || (this.html && html) ? 'textContent' : 'innerHTML',
+            message         = this.target.getAttribute(`${ this.selector }-msg`)              || this.msg,
+            position        = this.target.getAttribute(`${ this.selector }-pos`).split(' ')   || this.position;
         // ... and assign them as the mousetip's attributes
         this.mouseTip.attributes = {
             cssZIndex,
