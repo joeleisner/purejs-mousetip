@@ -30,6 +30,7 @@
   "devDependencies": {
     "@babel/core": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
+    "core-js": "^3.2.1",
     "gulp": "^4.0.2",
     "gulp-babel": "^8.0.0",
     "gulp-header": "^2.0.9",
@@ -43,5 +44,6 @@
     "changelog.md",
     "license",
     "readme.md"
-  ]
+  ],
+  "browserslist": "last 2 versions and > 0% and not dead"
 }
