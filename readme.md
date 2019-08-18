@@ -113,24 +113,43 @@ npm i
 ### Development
 ```shell
 # npm run * / npx gulp *
+# *:exp = expanded / *:min = minified (only affects scripts)
 
-# Build all script variants
+# Build all assets
 npm run build
+npm run build:exp
+npm run build:min
 
-# Build specific, non-module scripts
-npm run build-es2015
-npm run build-legacy
+# Build all module assets
+npm run modules
+# Build CommonJS module asset (type: CommonJS, output: dist/modules/mousetip.common.js)
+npm run modules:common
+# Build modern module asset (type: ES2015 (import/export), output: dist/modules/mousetip.js)
+npm run modules:modern
 
-# Build all module scripts
-npm run build-modules
+# Build all script assets
+npm run scripts
+npm run scripts:exp
+npm run scripts:min
+# Build legacy script assets (transpiler: Babel, output: dist/mousetip.legacy[.min].js)
+npm run scripts:legacy
+npm run scripts:legacy:exp
+npm run scripts:legacy:min
+# Build modern script assets (transpiler: none, output: dist/mousetip[.min].js)
+npm run scripts:modern
+npm run scripts:modern:exp
+npm run scripts:modern:min
 
-# Build specific module scripts
-npm run build-commonjs-module
-npm run build-es2015-module
-
-# Build all script varianst while watching for changes
+# Build all assets when changes are made
 npm run watch
+npm run watch:exp
+npm run watch:min
 ```
 
 ## Feedback
 If you run into any problems when using this script, would like to suggest new features for this script, or need help understanding how to use this script, please put in an issue or make a pull request.
+
+## Author
+**Joel Eisner**
+* [Twitter (@joeleisner)](https://twitter.com/joeleisner)
+* [GitHub (@joeleisner)](https://github.com/joeleisner)
