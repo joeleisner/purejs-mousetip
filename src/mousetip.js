@@ -55,16 +55,16 @@ class MouseTip {
     // Assign the mousetips attributes
     setAttributes() {
         // Override global attributes with target attributes if possible...
-        const cssZIndex     = this.target.getAttribute(`${ this.selector }-css-zindex`)       || this.cssZIndex,
-            cssPosition     = this.target.getAttribute(`${ this.selector }-css-position`)     || this.cssPosition,
-            cssPadding      = this.target.getAttribute(`${ this.selector }-css-padding`)      || this.cssPadding,
-            cssBorderRadius = this.target.getAttribute(`${ this.selector }-css-borderradius`) || this.cssBorderRadius,
-            cssBackground   = this.target.getAttribute(`${ this.selector }-css-background`)   || this.cssBackground,
-            cssColor        = this.target.getAttribute(`${ this.selector }-css-color`)        || this.cssColor,
+        const cssZIndex     = this.target.getAttribute(`${ this.selector }-css-zindex`)             || this.cssZIndex,
+            cssPosition     = this.target.getAttribute(`${ this.selector }-css-position`)           || this.cssPosition,
+            cssPadding      = this.target.getAttribute(`${ this.selector }-css-padding`)            || this.cssPadding,
+            cssBorderRadius = this.target.getAttribute(`${ this.selector }-css-borderradius`)       || this.cssBorderRadius,
+            cssBackground   = this.target.getAttribute(`${ this.selector }-css-background`)         || this.cssBackground,
+            cssColor        = this.target.getAttribute(`${ this.selector }-css-color`)              || this.cssColor,
             html            = this.target.hasAttribute(`${ this.selector }-${ this.html ? 'disable' : 'enable' }-html`),
             messageType     = (!this.html && !html) || (this.html && html) ? 'textContent' : 'innerHTML',
-            message         = this.target.getAttribute(`${ this.selector }-msg`)              || this.msg,
-            position        = this.target.getAttribute(`${ this.selector }-pos`).split(' ')   || this.position;
+            message         = this.target.getAttribute(`${ this.selector }-msg`)                    || this.msg,
+            position        = (this.target.getAttribute(`${ this.selector }-pos`) || '').split(' ') || this.position;
         // ... and assign them as the mousetip's attributes
         this.mouseTip.attributes = {
             cssZIndex,
