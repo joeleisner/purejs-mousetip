@@ -1,8 +1,6 @@
-const header = require('gulp-header');
-const pkg =    require('../package.json');
-
-module.exports = min => {
-    const bannerExp =
+const header = require('gulp-header'),
+    pkg      = require('../../package.json'),
+    exp      =
 `/**
  * <%= pkg.name %> - <%= pkg.description %>
  * @version <%= pkg.version %>
@@ -12,9 +10,8 @@ module.exports = min => {
  */
 
 `,
-        bannerMin =
+    min      =
 `/* <%= pkg.name %> <%= pkg.version %> | <%= pkg.license %> | <%= pkg.homepage %> */
-
 `;
-    return header(min ? bannerMin : bannerExp, { pkg });
-};
+
+module.exports = type => header(type === 'min' ? min : exp, { pkg });
