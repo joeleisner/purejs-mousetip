@@ -5,6 +5,9 @@ module.exports = {
         "node": true
     },
     "extends": "eslint:recommended",
+    "parserOptions": {
+        "ecmaVersion": 2018
+    },
     "rules": {
         "indent": [
             "error",
@@ -13,6 +16,12 @@ module.exports = {
         "linebreak-style": [
             "error",
             "unix"
+        ],
+        "no-unused-vars": [
+            "error",
+            {
+                "varsIgnorePattern": "MouseTip"
+            }
         ],
         "quotes": [
             "error",
