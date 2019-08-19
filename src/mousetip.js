@@ -39,7 +39,7 @@ class MouseTip {
     }
 
     // Delete the mousetip
-    deleteMouseTip() {
+    delete() {
         // If a mousetip is stored,...
         if (this.mouseTip.element) {
             // ... remove it from the page...
@@ -81,7 +81,7 @@ class MouseTip {
     }
 
     // Create the mousetip
-    createMouseTip(event) {
+    create(event) {
         // Assign the mousetip's attributes
         this.setAttributes();
 
@@ -102,25 +102,25 @@ class MouseTip {
         // Append the mousetip to the bottom of the page...
         document.body.appendChild(this.mouseTip.element);
         // ... and update it's vertical/horizontal position
-        window.requestAnimationFrame(() => this.updateMouseTip(event));
+        window.requestAnimationFrame(() => this.update(event));
     }
 
-    // Calculate the mousetip's vertical adjustment
-    calculateVerticalAdjustment(position) {
+    // Get the mousetip's vertical adjustment
+    getVerticalAdjustment(position) {
         if (position === 'top')    return -15 - this.mouseTip.element.offsetHeight;
         if (position === 'center') return -(this.mouseTip.element.offsetHeight / 2);
         return 15;
     }
 
-    // Calulate the mousetip's horizontal adjustment
-    calculateHorizontalAdjustment(position) {
+    // Get the mousetip's horizontal adjustment
+    getHorizontalAdjustment(position) {
         if (position === 'left')   return -15 - this.mouseTip.element.offsetWidth;
         if (position === 'center') return -(this.mouseTip.element.offsetWidth / 2);
         return 15;
     }
 
     // Update the mousetip
-    updateMouseTip(event) {
+    update(event) {
         // If the mousetip has no attributes or position, do nothing
         if (!this.mouseTip.attributes || !this.mouseTip.attributes.position) return;
 
@@ -130,13 +130,13 @@ class MouseTip {
         // If the mousetip's vertical adjustment is not set,...
         if (!this.mouseTip.attributes.verticalAdjustment) {
             // ... calulate and store the vertical adjustment of the mousetip
-            this.mouseTip.attributes.verticalAdjustment = this.calculateVerticalAdjustment(this.mouseTip.attributes.position[0]);
+            this.mouseTip.attributes.verticalAdjustment = this.getVerticalAdjustment(this.mouseTip.attributes.position[0]);
         }
 
         // If the mousetip's horizontal adjustment is not set,...
         if (!this.mouseTip.attributes.horizontalAdjustment) {
             // ... calculate and store the horizontal adjustment of the mousetip
-            this.mouseTip.attributes.horizontalAdjustment = this.calculateHorizontalAdjustment(this.mouseTip.attributes.position[1]);
+            this.mouseTip.attributes.horizontalAdjustment = this.getHorizontalAdjustment(this.mouseTip.attributes.position[1]);
         }
 
         // Grab the X/Y of the mouse on the page...
@@ -155,18 +155,18 @@ class MouseTip {
         const match = this.targets.find(target => target.contains(event.target));
 
         // If no target was found, attempt to delete the mousetip
-        if (!match) return this.deleteMouseTip();
+        if (!match) return this.delete();
 
         // If no current target is stored,...
         if (!this.target) {
             // ... store it...
             this.target = match;
             // ... and create the mousetip
-            return this.createMouseTip(event);
+            return this.create(event);
         }
 
         // Otherwise, update the mousetip
-        return window.requestAnimationFrame(() => this.updateMouseTip(event));
+        return window.requestAnimationFrame(() => this.update(event));
     }
 
     // Start handling mouse events
@@ -194,6 +194,6 @@ class MouseTip {
         // Reset the stored target elements for reference...
         this.targets = [];
         // ... and the mousetip
-        this.deleteMouseTip();
+        this.delete();
     }
 }
