@@ -13,7 +13,7 @@ This patch update includes updated dependencies and a new setting for MouseTip:
 * Added the ability to set a default message within MouseTip's constructor function
 
 ## [Version 2.1.3 - Security Vulnerability Fixes](https://github.com/joeleisner/purejs-mousetip/releases/tag/v2.1.3)
-This patch update includes updated dependencies due to isses with Lodash < 4.17.11. Here's the details:
+This patch update includes updated dependencies due to issues with Lodash < 4.17.11. Here's the details:
 * Updated gulp-babel, gulp-header, gulp-inject-string, gulp-rename, gulp-uglify, and gulp-uglifyes to their latest versions
 * Swapped babel-core and babel-preset-env with @babel/core @babel/preset-env, which required updating the Babel RC file
 
