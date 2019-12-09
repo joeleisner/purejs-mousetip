@@ -71,6 +71,7 @@ Attribute | Description | Default | Example
 `mousetip-css-background` | Alters the CSS background color of the tooltip | `rgba(0,0,0,0.75)` | `<div mousetip mousetip-msg="Message" mousetip-css-background="white"></div>`
 `mousetip-css-color` | Alters the CSS text color of the tooltip | `#fff` | `<div mousetip mousetip-msg="Message" mousetip-css-color="black"></div>`
 `mousetip-enable-html` or `mousetip-disable-html` | Enables/disables the use of valid HTML within the tooltip message. | `true` | `<div mousetip mousetip-msg="<strong>Message</strong>" mousetip-enable-html></div>`
+`mousetip-offset` | Alters the tooltip's position distance from the mouse cursor. This essentially acts as a multiplier to the `mousetip-pos` attribute or `{ position }` global adjustment | 15 | `<div mousetip mousetip-offset="20"></div>`
 
 These inline/attribute adjustments will supersede default and user-set global settings.
 
@@ -87,6 +88,7 @@ In addition to the element attribute adjustments above, you can also set global 
         cssColor:        'black',       // Default: '#fff'
         html:            false,         // Default: true
         msg:             'Message!',    // Default: ''
+        offset:          20             // Default: 15
         position:        'top left',    // Default: 'bottom right'
         selector:        'awesomeName', // Default: 'mousetip'
         stylesheet:      true           // Default: false
