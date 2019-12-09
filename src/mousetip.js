@@ -66,6 +66,7 @@ class MouseTip {
             html            = this.target.hasAttribute(`${ this.selector }-${ this.html ? 'disable' : 'enable' }-html`),
             messageType     = (!this.html && !html) || (this.html && html) ? 'textContent' : 'innerHTML',
             message         = this.target.getAttribute(`${ this.selector }-msg`)                    || this.msg,
+            offset          = Number(this.target.getAttribute(`${ this.selector }-offset`))         || this.offset,
             position        = (this.target.getAttribute(`${ this.selector }-pos`) || '').split(' ') || this.position;
         // ... and assign them as the mousetip's attributes
         this.mouseTip.attributes = {
@@ -78,6 +79,7 @@ class MouseTip {
             html,
             messageType,
             message,
+            offset,
             position
         };
     }
@@ -108,10 +110,15 @@ class MouseTip {
     }
 
     // Get the mousetip's vertical/horizontal adjustment
-    getAlignmentAdjustment(position, offset) {
-        if ([ 'top', 'left' ].includes(position)) return -(this.offset) - this.mouseTip.element[offset];
-        if (position === 'center')                return -(this.mouseTip.element[offset] / 2);
-        return this.offset;
+    getAlignmentAdjustment(position, offset, axis) {
+        const dimensions = {
+                y: 'offsetHeight',
+                x: 'offsetWidth'
+            },
+            dimension = dimensions[axis];
+        if ([ 'top', 'left' ].includes(position)) return -(offset) - this.mouseTip.element[dimension];
+        if (position === 'center')                return -(this.mouseTip.element[dimension] / 2);
+        return offset;
     }
 
     // Update the mousetip
@@ -125,13 +132,21 @@ class MouseTip {
         // If the mousetip's vertical adjustment is not set,...
         if (!this.mouseTip.attributes.verticalAdjustment) {
             // ... calulate and store the vertical adjustment of the mousetip
-            this.mouseTip.attributes.verticalAdjustment = this.getAlignmentAdjustment(this.mouseTip.attributes.position[0], 'offsetHeight');
+            this.mouseTip.attributes.verticalAdjustment = this.getAlignmentAdjustment(
+                this.mouseTip.attributes.position[0],
+                this.mouseTip.attributes.offset,
+                'y'
+            );
         }
 
         // If the mousetip's horizontal adjustment is not set,...
         if (!this.mouseTip.attributes.horizontalAdjustment) {
             // ... calculate and store the horizontal adjustment of the mousetip
-            this.mouseTip.attributes.horizontalAdjustment = this.getAlignmentAdjustment(this.mouseTip.attributes.position[1], 'offsetWidth');
+            this.mouseTip.attributes.horizontalAdjustment = this.getAlignmentAdjustment(
+                this.mouseTip.attributes.position[1],
+                this.mouseTip.attributes.offset,
+                'x'
+            );
         }
 
         // Grab the X/Y of the mouse on the page...
