@@ -161,22 +161,20 @@ class MouseTip {
 
     // Handle mouse events
     handleEvent(event) {
-        // Try and find the target in the stored reference elements
-        const match = this.targets.find(target => target.contains(event.target));
-
-        // If no target was found, attempt to delete the mousetip
-        if (!match) return this.delete();
-
-        // If no current target is stored,...
-        if (!this.target) {
-            // ... store it...
-            this.target = match;
-            // ... and create the mousetip
-            return this.create(event);
+        switch (event.type) {
+        case 'mousemove':
+            // When the mouse moves inside a target element,...
+            if (!this.target) {
+                // ... create the moustetip if the target element has not been saved,...
+                this.target = event.currentTarget;
+                return this.create(event);
+            }
+            // ... otherwise, update the mousetip
+            return window.requestAnimationFrame(() => this.update(event));
+        case 'mouseleave':
+            // When the mouse leaves a target element, delete the mousetip
+            return this.delete();
         }
-
-        // Otherwise, update the mousetip
-        return window.requestAnimationFrame(() => this.update(event));
     }
 
     // Start handling mouse events
@@ -189,8 +187,12 @@ class MouseTip {
 
         // Store the target elements for reference,...
         this.targets = targets;
-        // ... and bind to the document's mouse move events
-        document.addEventListener('mousemove', this, false);
+        // ... and for each...
+        this.targets.forEach(target => {
+            // ... bind to its mouse move and leave events
+            target.addEventListener('mousemove', this, false);
+            target.addEventListener('mouseleave', this, false);
+        });
     }
 
     // Stop handling mouse events
@@ -198,8 +200,12 @@ class MouseTip {
         // If no element references are stored, return
         if (!this.targets.length) return;
 
-        // Unbind from the document's mouse move events
-        document.removeEventListener('mousemove', this, false);
+        // For each target element reference...
+        this.targets.forEach(target => {
+            // ... unbind from its mouse move and leave events
+            target.removeEventListener('mousemove', this, false);
+            target.removeEventListener('mouseleave', this, false);
+        });
 
         // Reset the stored target elements for reference...
         this.targets = [];
