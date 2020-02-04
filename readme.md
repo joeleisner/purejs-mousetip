@@ -80,18 +80,18 @@ In addition to the element attribute adjustments above, you can also set global 
 <script src="mousetip.min.js"></script>
 <script>
     let mouseTip = new MouseTip({
-        cssZIndex:       '1000',        // Default: '9999'
-        cssPosition:     'relative',    // Default: 'absolute'
-        cssPadding:      '30px',        // Default: '15px'
-        cssBorderRadius: '15px',        // Default: '4px'
-        cssBackground:   'white',       // Default: 'rgba(0,0,0,0.75)'
-        cssColor:        'black',       // Default: '#fff'
-        html:            false,         // Default: true
-        msg:             'Message!',    // Default: ''
-        offset:          20             // Default: 15
-        position:        'top left',    // Default: 'bottom right'
-        selector:        'awesomeName', // Default: 'mousetip'
-        stylesheet:      true           // Default: false
+        cssZIndex:       '1000',            // Default: '9999'
+        cssPosition:     'relative',        // Default: 'absolute'
+        cssPadding:      '30px',            // Default: '15px'
+        cssBorderRadius: '15px',            // Default: '4px'
+        cssBackground:   'white',           // Default: 'rgba(0,0,0,0.75)'
+        cssColor:        'black',           // Default: '#fff'
+        html:            false,             // Default: true
+        msg:             'Message!',        // Default: ''
+        offset:          20                 // Default: 15
+        position:        [ 'top', 'left' ], // Default: [ 'bottom', 'right' ]
+        selector:        'awesomeName',     // Default: 'mousetip'
+        stylesheet:      true               // Default: false
     });
     mouseTip.start();
 </script>

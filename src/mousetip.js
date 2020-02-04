@@ -1,16 +1,18 @@
 class MouseTip {
     // Construct the class
     constructor({
+        animations      = true,
         cssZIndex       = '9999',
         cssPosition     = 'absolute',
-        cssPadding      = '15px',
-        cssBorderRadius = '4px',
-        cssBackground   = 'rgba(0,0,0,0.75)',
+        cssPadding      = '.75rem 1rem',
+        cssBorderRadius = '.25rem',
+        cssBackground   = 'rgba(0,0,0,.75)',
         cssColor        = '#fff',
+        cssDisplay      = 'inline-block',
         html            = true,
         msg             = '',
         offset          = 15,
-        position        = 'bottom right',
+        position        = [ 'bottom', 'right' ],
         selector        = 'mousetip',
         stylesheet      = false
     } = {}) {
@@ -21,32 +23,78 @@ class MouseTip {
         // ... and an object to store the mousetip's element and attributes
         this.mouseTip = {};
 
-        // Assign the settings to the class,...
+        // Assign the settings to the class
+        this.animations      = animations;
         this.html            = html;
         this.msg             = msg;
         this.offset          = offset;
-        this.position        = position.split(' ');
+        this.position        = position;
         this.selector        = selector;
         this.stylesheet      = stylesheet;
-        // ... and if a stylesheet has been enabled, do nothing more
-        if (this.stylesheet) return;
-
-        // Otherwise, assign the CSS settings to the class as well
         this.cssZIndex       = cssZIndex;
         this.cssPosition     = cssPosition;
         this.cssPadding      = cssPadding;
         this.cssBorderRadius = cssBorderRadius;
         this.cssBackground   = cssBackground;
         this.cssColor        = cssColor;
+        this.cssDisplay      = cssDisplay;
+    }
+
+    // Set the global styles
+    setGlobalStyles() {
+        // Create the global styles <style> tag...
+        const style = document.createElement('style');
+        // ... and define the base mousetip styles based on class settings
+        let rules = `#${ this.selector }{position:${ this.cssPosition };display:${ this.cssDisplay };padding:${ this.cssPadding };border-radius:${ this.cssBorderRadius };background-color:${ this.cssBackground };color:${ this.cssColor };z-index:${ this.cssZIndex };}`;
+
+        // If animations are enabled, add additional styles to support in/out transitions
+        if (this.animations) rules += `@keyframes mouseTipTransition{from{transform:translateY(.5rem);opacity:0;}to{transform:translateY(0);opacity:1;}}#${ this.selector }[aria-hidden="false"],#${ this.selector }[aria-hidden="true"]{animation: mouseTipTransition .2s ease-in-out;}#${ this.selector }[aria-hidden="true"]{animation-direction:reverse;}`;
+
+        // Fill the <style> with the defined styles,...
+        style.textContent = rules;
+        // ... store it for later reference,...
+        this.css = style;
+        // ... and add it to the head
+        document.head.appendChild(style);
+    }
+
+    // Unset the global styles
+    unsetGlobalStyles() {
+        // If a reference to the global styles <style> tag does not exist, do nothing else
+        if (!this.css) return;
+
+        // Remove the global styles <style> tag
+        this.css.parentNode.removeChild(this.css);
+    }
+
+    // Animation end handler
+    animationEnd({ target }) {
+        // Remove the animation end event listener from the mousetip
+        target.removeEventListener('animationend', this.animationEnd, false);
+
+        // Get the aria-hidden attribute value...
+        const state = target.getAttribute('aria-hidden');
+        // ... and if it's true (meaning the mousetip has been animated out), simply delete the mousetip
+        if (state === 'true') return target.parentNode.removeChild(target);
+
+        // Otherwise, remove the aria-hidden attribute
+        target.removeAttribute('aria-hidden');
     }
 
     // Delete the mousetip
     delete() {
         // If a mousetip is stored,...
         if (this.mouseTip.element) {
-            // ... remove it from the page...
-            this.mouseTip.element.parentNode.removeChild(this.mouseTip.element);
-            // ... and reset it
+            // ... and animations are enabled,...
+            if (this.animations) {
+                // ... animate the mousetip out and delete it,...
+                this.mouseTip.element.setAttribute('aria-hidden', true);
+                this.mouseTip.element.addEventListener('animationend', this.animationEnd, false);
+            } else {
+                // ... otherwise just delete the mousetip...
+                this.mouseTip.element.parentNode.removeChild(this.mouseTip.element);
+            }
+            // ... and always reset the mousetip reference
             this.mouseTip = {};
         }
 
@@ -57,12 +105,13 @@ class MouseTip {
     // Assign the mousetips attributes
     setAttributes() {
         // Override global attributes with target attributes if possible...
-        const cssZIndex     = this.target.getAttribute(`${ this.selector }-css-zindex`)             || this.cssZIndex,
-            cssPosition     = this.target.getAttribute(`${ this.selector }-css-position`)           || this.cssPosition,
-            cssPadding      = this.target.getAttribute(`${ this.selector }-css-padding`)            || this.cssPadding,
-            cssBorderRadius = this.target.getAttribute(`${ this.selector }-css-borderradius`)       || this.cssBorderRadius,
-            cssBackground   = this.target.getAttribute(`${ this.selector }-css-background`)         || this.cssBackground,
-            cssColor        = this.target.getAttribute(`${ this.selector }-css-color`)              || this.cssColor,
+        const cssZIndex     = this.target.getAttribute(`${ this.selector }-css-zindex`),
+            cssPosition     = this.target.getAttribute(`${ this.selector }-css-position`),
+            cssPadding      = this.target.getAttribute(`${ this.selector }-css-padding`),
+            cssBorderRadius = this.target.getAttribute(`${ this.selector }-css-borderradius`),
+            cssBackground   = this.target.getAttribute(`${ this.selector }-css-background`),
+            cssColor        = this.target.getAttribute(`${ this.selector }-css-color`),
+            cssDisplay      = this.target.getAttribute(`${ this.selector }-css-display`),
             html            = this.target.hasAttribute(`${ this.selector }-${ this.html ? 'disable' : 'enable' }-html`),
             messageType     = (!this.html && !html) || (this.html && html) ? 'textContent' : 'innerHTML',
             message         = this.target.getAttribute(`${ this.selector }-msg`)                    || this.msg,
@@ -76,6 +125,7 @@ class MouseTip {
             cssBorderRadius,
             cssBackground,
             cssColor,
+            cssDisplay,
             html,
             messageType,
             message,
@@ -93,7 +143,7 @@ class MouseTip {
         this.mouseTip.element = document.createElement('span');
         // ... assign its ID and styling,...
         this.mouseTip.element.id                 = this.selector;
-        this.mouseTip.element.style.display      = 'none';
+        this.mouseTip.element.style.display      = this.mouseTip.attributes.cssDisplay;
         this.mouseTip.element.style.zIndex       = this.mouseTip.attributes.cssZIndex;
         this.mouseTip.element.style.position     = this.mouseTip.attributes.cssPosition;
         this.mouseTip.element.style.padding      = this.mouseTip.attributes.cssPadding;
@@ -102,6 +152,11 @@ class MouseTip {
         this.mouseTip.element.style.color        = this.mouseTip.attributes.cssColor;
         // ... and add its message
         this.mouseTip.element[this.mouseTip.attributes.messageType] = this.mouseTip.attributes.message;
+
+        if (this.animations) {
+            this.mouseTip.element.setAttribute('aria-hidden', false);
+            this.mouseTip.element.addEventListener('animationend', this.animationEnd, false);
+        }
 
         // Append the mousetip to the bottom of the page...
         document.body.appendChild(this.mouseTip.element);
@@ -154,9 +209,6 @@ class MouseTip {
         // ... and update the mousetip's position
         this.mouseTip.element.style.top  = `${ pageY + this.mouseTip.attributes.verticalAdjustment }px`;
         this.mouseTip.element.style.left = `${ pageX + this.mouseTip.attributes.horizontalAdjustment }px`;
-
-        // If the mousetip is hidden, show it
-        if (this.mouseTip.element.style.display === 'none') this.mouseTip.element.style.display = 'inline-block';
     }
 
     // Handle mouse events
@@ -179,10 +231,9 @@ class MouseTip {
 
     // Start handling mouse events
     start() {
-        // Grab all target elements by selector
+        // Grab all target elements by selector...
         const targets = Array.from(document.querySelectorAll(`[${ this.selector }]`));
-
-        // If no target elements were found, do nothing
+        // ... and if no target elements were found, do nothing
         if (!targets) return;
 
         // Store the target elements for reference,...
@@ -193,6 +244,9 @@ class MouseTip {
             target.addEventListener('mousemove', this, false);
             target.addEventListener('mouseleave', this, false);
         });
+
+        // If a custom stylesheet has not been enabled, set the global styles
+        if (!this.stylesheet) this.setGlobalStyles();
     }
 
     // Stop handling mouse events
@@ -211,5 +265,8 @@ class MouseTip {
         this.targets = [];
         // ... and the mousetip
         this.delete();
+
+        // If a custom stylesheet has not been enabled, unset the global styles
+        if (!this.stylesheet) this.unsetGlobalStyles();
     }
 }
