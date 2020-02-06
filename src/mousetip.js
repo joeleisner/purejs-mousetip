@@ -1,20 +1,14 @@
 class MouseTip {
     // Construct the class
     constructor({
-        animations      = true,
-        cssZIndex       = '9999',
-        cssPosition     = 'absolute',
-        cssPadding      = '.75rem 1rem',
-        cssBorderRadius = '.25rem',
-        cssBackground   = 'rgba(0,0,0,.75)',
-        cssColor        = '#fff',
-        cssDisplay      = 'inline-block',
-        html            = true,
-        msg             = '',
-        offset          = 15,
-        position        = [ 'bottom', 'right' ],
-        selector        = 'mousetip',
-        stylesheet      = false
+        animations = true,
+        direction  = [ 'bottom', 'right' ],
+        html       = true,
+        msg        = '',
+        offset     = 15,
+        selector   = 'mousetip',
+        stylesheet = false,
+        styles     = {}
     } = {}) {
         // Initialize an array for all targets,...
         this.targets = [];
@@ -28,42 +22,60 @@ class MouseTip {
         this.html            = html;
         this.msg             = msg;
         this.offset          = offset;
-        this.position        = position;
+        this.direction       = direction;
         this.selector        = selector;
         this.stylesheet      = stylesheet;
-        this.cssZIndex       = cssZIndex;
-        this.cssPosition     = cssPosition;
-        this.cssPadding      = cssPadding;
-        this.cssBorderRadius = cssBorderRadius;
-        this.cssBackground   = cssBackground;
-        this.cssColor        = cssColor;
-        this.cssDisplay      = cssDisplay;
+
+        if (this.stylesheet) return;
+
+        this.styles = this.defineGlobalStyles(styles);
+    }
+
+    // Define global styles
+    defineGlobalStyles(styles) {
+        // Define the default mousetip styles...
+        const defaults    = {
+            backgroundColor: 'rgba(0,0,0,.75)',
+            borderRadius:    '.25rem',
+            color:           '#fff',
+            display:         'inline-block',
+            padding:         '.75rem 1rem',
+            position:        'absolute',
+            zIndex:          '9999'
+        };
+        // ... and for each,...
+        Object.keys(defaults).forEach(key => {
+            // ... if that style hasn't been specified by the user, set it to the default
+            if (!styles[key]) styles[key] = defaults[key];
+        });
+
+        // Finally, return the styles
+        return styles;
     }
 
     // Set the global styles
     setGlobalStyles() {
         // Create the global styles <style> tag...
-        const style = document.createElement('style');
+        const css = document.createElement('style');
         // ... and define the base mousetip styles based on class settings
-        let rules = `#${ this.selector }{position:${ this.cssPosition };display:${ this.cssDisplay };padding:${ this.cssPadding };border-radius:${ this.cssBorderRadius };background-color:${ this.cssBackground };color:${ this.cssColor };z-index:${ this.cssZIndex };}`;
+        let styles = `#${ this.selector }{position:${ this.styles.position };display:${ this.styles.display };padding:${ this.styles.padding };border-radius:${ this.styles.borderRadius };background-color:${ this.styles.backgroundColor };color:${ this.styles.color };z-index:${ this.styles.zIndex };}`;
 
         // If animations are enabled, add additional styles to support in/out transitions
-        if (this.animations) rules += `@keyframes mouseTipTransition{from{transform:translateY(.5rem);opacity:0;}to{transform:translateY(0);opacity:1;}}#${ this.selector }[aria-hidden="false"],#${ this.selector }[aria-hidden="true"]{animation: mouseTipTransition .2s ease-in-out;}#${ this.selector }[aria-hidden="true"]{animation-direction:reverse;}`;
+        if (this.animations) styles += `@keyframes mouseTipTransition{from{transform:translateY(.5rem);opacity:0;}to{transform:translateY(0);opacity:1;}}#${ this.selector }[aria-hidden="false"],#${ this.selector }[aria-hidden="true"]{animation: mouseTipTransition .2s ease-in-out;}#${ this.selector }[aria-hidden="true"]{animation-direction:reverse;}`;
 
-        // Fill the <style> with the defined styles,...
-        style.textContent = rules;
+        // Fill the global styles <style> tag with the defined styles,...
+        css.textContent = styles;
         // ... store it for later reference,...
-        this.css = style;
+        this.css = css;
         // ... and add it to the head
-        document.head.appendChild(style);
+        document.head.appendChild(css);
     }
 
     // Unset the global styles
     unsetGlobalStyles() {
-        // If a reference to the global styles <style> tag does not exist, do nothing else
+        // If a reference to the global styles <style> tag does not exist, do nothing else...
         if (!this.css) return;
-
-        // Remove the global styles <style> tag
+        // ... otherwise, remove the global styles <style> tag
         this.css.parentNode.removeChild(this.css);
     }
 
@@ -102,57 +114,84 @@ class MouseTip {
         if (this.target) this.target = '';
     }
 
-    // Assign the mousetips attributes
-    setAttributes() {
+    // Get an attribute from the target element
+    getTargetAttribute(name, wrapper) {
+        // Get the attribute and ensure it's an empty string if it doesn't exist
+        const attribute = this.target.getAttribute(`${ this.selector }-${ name }`) || '';
+
+        // If no wrapper function has been set, return the attribute as is...
+        if (!wrapper) return attribute;
+        // ... otherwise, return the attribute passed through the wrapper function
+        return wrapper(attribute);
+    }
+
+    // Check to see if the target element has a given attribute
+    targetHasAttribute(name) {
+        return this.target.hasAttribute(`${ this.selector }-${ name }`);
+    }
+
+    // Set the mousetip's local attributes
+    setLocalAttributes() {
         // Override global attributes with target attributes if possible...
-        const cssZIndex     = this.target.getAttribute(`${ this.selector }-css-zindex`),
-            cssPosition     = this.target.getAttribute(`${ this.selector }-css-position`),
-            cssPadding      = this.target.getAttribute(`${ this.selector }-css-padding`),
-            cssBorderRadius = this.target.getAttribute(`${ this.selector }-css-borderradius`),
-            cssBackground   = this.target.getAttribute(`${ this.selector }-css-background`),
-            cssColor        = this.target.getAttribute(`${ this.selector }-css-color`),
-            cssDisplay      = this.target.getAttribute(`${ this.selector }-css-display`),
-            html            = this.target.hasAttribute(`${ this.selector }-${ this.html ? 'disable' : 'enable' }-html`),
-            messageType     = (!this.html && !html) || (this.html && html) ? 'textContent' : 'innerHTML',
-            message         = this.target.getAttribute(`${ this.selector }-msg`)                    || this.msg,
-            offset          = Number(this.target.getAttribute(`${ this.selector }-offset`))         || this.offset,
-            position        = (this.target.getAttribute(`${ this.selector }-pos`) || '').split(' ') || this.position;
+        const backgroundColor = this.getTargetAttribute('background-color'),
+            borderRadius      = this.getTargetAttribute('border-radius'),
+            color             = this.getTargetAttribute('color'),
+            direction         = this.getTargetAttribute('direction').split(' ') || this.direction,
+            display           = this.getTargetAttribute('display'),
+            html              = this.targetHasAttribute(`${ this.html ? 'disable' : 'enable' }-html`),
+            message           = {
+                text: this.getTargetAttribute('msg') || this.msg,
+                type: (!this.html && !html) || (this.html && html) ? 'textContent' : 'innerHTML'
+            },
+            offset            = this.getTargetAttribute('offset', Number)       || this.offset,
+            padding           = this.getTargetAttribute('padding'),
+            position          = this.getTargetAttribute('position'),
+            style             = this.getTargetAttribute('style'),
+            zIndex            = this.getTargetAttribute('z-index');
         // ... and assign them as the mousetip's attributes
         this.mouseTip.attributes = {
-            cssZIndex,
-            cssPosition,
-            cssPadding,
-            cssBorderRadius,
-            cssBackground,
-            cssColor,
-            cssDisplay,
+            backgroundColor,
+            borderRadius,
+            color,
+            direction,
+            display,
             html,
-            messageType,
             message,
             offset,
-            position
+            padding,
+            position,
+            style,
+            zIndex
         };
+    }
+
+    // Set the mousetip's local styles
+    setLocalStyles() {
+        // First, set the style attribute in case the corresponding mousetip attribute has been set
+        this.mouseTip.element.setAttribute('style', this.mouseTip.attributes.style);
+
+        // Next, find the explicit style attributes that have been set...
+        const styles = Object.keys(this.mouseTip.attributes)
+            .filter(key => ![ 'direction', 'html', 'message', 'offset', 'style' ].includes(key) && this.mouseTip.attributes[key]);
+        // ... and apply them to the mousetip element
+        styles.forEach(style => this.mouseTip.element.style[style] = this.mouseTip.attributes[style]);
     }
 
     // Create the mousetip
     create(event) {
-        // Assign the mousetip's attributes
-        this.setAttributes();
+        // Set the mousetip's local attributes
+        this.setLocalAttributes();
 
         // Create the mousetip,...
         this.mouseTip.element = document.createElement('span');
-        // ... assign its ID and styling,...
-        this.mouseTip.element.id                 = this.selector;
-        this.mouseTip.element.style.display      = this.mouseTip.attributes.cssDisplay;
-        this.mouseTip.element.style.zIndex       = this.mouseTip.attributes.cssZIndex;
-        this.mouseTip.element.style.position     = this.mouseTip.attributes.cssPosition;
-        this.mouseTip.element.style.padding      = this.mouseTip.attributes.cssPadding;
-        this.mouseTip.element.style.borderRadius = this.mouseTip.attributes.cssBorderRadius;
-        this.mouseTip.element.style.background   = this.mouseTip.attributes.cssBackground;
-        this.mouseTip.element.style.color        = this.mouseTip.attributes.cssColor;
+        // ... assign its ID,...
+        this.mouseTip.element.id                    = this.selector;
+        // ... set its styles,...
+        this.setLocalStyles();
         // ... and add its message
-        this.mouseTip.element[this.mouseTip.attributes.messageType] = this.mouseTip.attributes.message;
+        this.mouseTip.element[this.mouseTip.attributes.message.type] = this.mouseTip.attributes.message.text;
 
+        // If animations are enabled, animate the mousetip in
         if (this.animations) {
             this.mouseTip.element.setAttribute('aria-hidden', false);
             this.mouseTip.element.addEventListener('animationend', this.animationEnd, false);
@@ -165,30 +204,30 @@ class MouseTip {
     }
 
     // Get the mousetip's vertical/horizontal adjustment
-    getAlignmentAdjustment(position, offset, axis) {
+    getAlignmentAdjustment(direction, offset, axis) {
         const dimensions = {
                 y: 'offsetHeight',
                 x: 'offsetWidth'
             },
             dimension = dimensions[axis];
-        if ([ 'top', 'left' ].includes(position)) return -(offset) - this.mouseTip.element[dimension];
-        if (position === 'center')                return -(this.mouseTip.element[dimension] / 2);
+        if ([ 'top', 'left' ].includes(direction)) return -(offset) - this.mouseTip.element[dimension];
+        if (direction === 'center')                return -(this.mouseTip.element[dimension] / 2);
         return offset;
     }
 
     // Update the mousetip
     update(event) {
-        // If the mousetip has no attributes or position, do nothing
-        if (!this.mouseTip.attributes || !this.mouseTip.attributes.position) return;
+        // If the mousetip has no attributes or direction, do nothing
+        if (!this.mouseTip.attributes || !this.mouseTip.attributes.direction) return;
 
-        // If the position does not contain two items, set it to the default
-        if (this.mouseTip.attributes.position.length !== 2) this.mouseTip.attributes.position = [ 'bottom', 'right' ];
+        // If the direction does not contain two items, set it to the default
+        if (this.mouseTip.attributes.direction.length !== 2) this.mouseTip.attributes.direction = [ 'bottom', 'right' ];
 
         // If the mousetip's vertical adjustment is not set,...
         if (!this.mouseTip.attributes.verticalAdjustment) {
             // ... calulate and store the vertical adjustment of the mousetip
             this.mouseTip.attributes.verticalAdjustment = this.getAlignmentAdjustment(
-                this.mouseTip.attributes.position[0],
+                this.mouseTip.attributes.direction[0],
                 this.mouseTip.attributes.offset,
                 'y'
             );
@@ -198,7 +237,7 @@ class MouseTip {
         if (!this.mouseTip.attributes.horizontalAdjustment) {
             // ... calculate and store the horizontal adjustment of the mousetip
             this.mouseTip.attributes.horizontalAdjustment = this.getAlignmentAdjustment(
-                this.mouseTip.attributes.position[1],
+                this.mouseTip.attributes.direction[1],
                 this.mouseTip.attributes.offset,
                 'x'
             );
@@ -206,7 +245,7 @@ class MouseTip {
 
         // Grab the X/Y of the mouse on the page...
         const { pageX, pageY } = event;
-        // ... and update the mousetip's position
+        // ... and update the mousetip's direction
         this.mouseTip.element.style.top  = `${ pageY + this.mouseTip.attributes.verticalAdjustment }px`;
         this.mouseTip.element.style.left = `${ pageX + this.mouseTip.attributes.horizontalAdjustment }px`;
     }
