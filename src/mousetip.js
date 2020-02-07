@@ -17,24 +17,26 @@ class MouseTip {
         // ... and an object to store the mousetip's element and attributes
         this.mouseTip = {};
 
-        // Assign the settings to the class
-        this.animations      = animations;
-        this.html            = html;
-        this.msg             = msg;
-        this.offset          = offset;
-        this.direction       = direction;
-        this.selector        = selector;
-        this.stylesheet      = stylesheet;
+        // Define the global animations...
+        this.animations = animations ? this.overrideDefaults({
+            duration: '.2s',
+            from:     'transform:translateY(.5rem);opacity:0;',
+            name:     'mouseTipTransition',
+            to:       'transform:translateY(0);opacity:1;',
+            timing:   'ease-in-out'
+        }, animations) : false;
+        // ... and assign all other settings
+        this.html       = html;
+        this.msg        = msg;
+        this.offset     = offset;
+        this.direction  = direction;
+        this.selector   = selector;
+        this.stylesheet = stylesheet;
 
+        // If a custom stylesheet is being used, do nothing else...
         if (this.stylesheet) return;
-
-        this.styles = this.defineGlobalStyles(styles);
-    }
-
-    // Define global styles
-    defineGlobalStyles(styles) {
-        // Define the default mousetip styles...
-        const defaults    = {
+        // ... otherwise, define the global styles
+        this.styles = this.overrideDefaults({
             backgroundColor: 'rgba(0,0,0,.75)',
             borderRadius:    '.25rem',
             color:           '#fff',
@@ -42,15 +44,15 @@ class MouseTip {
             padding:         '.75rem 1rem',
             position:        'absolute',
             zIndex:          '9999'
-        };
-        // ... and for each,...
-        Object.keys(defaults).forEach(key => {
-            // ... if that style hasn't been specified by the user, set it to the default
-            if (!styles[key]) styles[key] = defaults[key];
-        });
+        }, styles);
+    }
 
-        // Finally, return the styles
-        return styles;
+    // Override default objects with that of user defined objects
+    overrideDefaults(defaults, custom) {
+        // Ensure the user defined object is an object...
+        if (typeof custom !== 'object') custom = {};
+        // ... then assign them to the defaults
+        return Object.assign(defaults, custom);
     }
 
     // Set the global styles
@@ -61,7 +63,7 @@ class MouseTip {
         let styles = `#${ this.selector }{position:${ this.styles.position };display:${ this.styles.display };padding:${ this.styles.padding };border-radius:${ this.styles.borderRadius };background-color:${ this.styles.backgroundColor };color:${ this.styles.color };z-index:${ this.styles.zIndex };}`;
 
         // If animations are enabled, add additional styles to support in/out transitions
-        if (this.animations) styles += `@keyframes mouseTipTransition{from{transform:translateY(.5rem);opacity:0;}to{transform:translateY(0);opacity:1;}}#${ this.selector }[aria-hidden="false"],#${ this.selector }[aria-hidden="true"]{animation: mouseTipTransition .2s ease-in-out;}#${ this.selector }[aria-hidden="true"]{animation-direction:reverse;}`;
+        if (this.animations) styles += `@keyframes ${ this.animations.name }{from{${ this.animations.from }}to{${ this.animations.to }}}#${ this.selector }[aria-hidden="false"],#${ this.selector }[aria-hidden="true"]{animation: ${ this.animations.name } ${ this.animations.duration } ${ this.animations.timing };}#${ this.selector }[aria-hidden="true"]{animation-direction:reverse;}`;
 
         // Fill the global styles <style> tag with the defined styles,...
         css.textContent = styles;
@@ -133,48 +135,47 @@ class MouseTip {
     // Set the mousetip's local attributes
     setLocalAttributes() {
         // Override global attributes with target attributes if possible...
-        const backgroundColor = this.getTargetAttribute('background-color'),
-            borderRadius      = this.getTargetAttribute('border-radius'),
-            color             = this.getTargetAttribute('color'),
-            direction         = this.getTargetAttribute('direction').split(' ') || this.direction,
-            display           = this.getTargetAttribute('display'),
-            html              = this.targetHasAttribute(`${ this.html ? 'disable' : 'enable' }-html`),
-            message           = {
+        const direction = this.getTargetAttribute('direction').split(' ') || this.direction,
+            html        = this.targetHasAttribute(`${ this.html ? 'disable' : 'enable' }-html`),
+            message     = {
                 text: this.getTargetAttribute('msg') || this.msg,
                 type: (!this.html && !html) || (this.html && html) ? 'textContent' : 'innerHTML'
             },
-            offset            = this.getTargetAttribute('offset', Number)       || this.offset,
-            padding           = this.getTargetAttribute('padding'),
-            position          = this.getTargetAttribute('position'),
-            style             = this.getTargetAttribute('style'),
-            zIndex            = this.getTargetAttribute('z-index');
+            offset      = this.getTargetAttribute('offset', Number)       || this.offset,
+            style       = {
+                backgroundColor: this.getTargetAttribute('background-color'),
+                base:            this.getTargetAttribute('style'),
+                borderRadius:    this.getTargetAttribute('border-radius'),
+                color:           this.getTargetAttribute('color'),
+                display:         this.getTargetAttribute('display'),
+                padding:         this.getTargetAttribute('padding'),
+                position:        this.getTargetAttribute('position'),
+                zIndex:          this.getTargetAttribute('z-index')
+            };
         // ... and assign them as the mousetip's attributes
         this.mouseTip.attributes = {
-            backgroundColor,
-            borderRadius,
-            color,
             direction,
-            display,
             html,
             message,
             offset,
-            padding,
-            position,
-            style,
-            zIndex
+            style
         };
     }
 
     // Set the mousetip's local styles
     setLocalStyles() {
-        // First, set the style attribute in case the corresponding mousetip attribute has been set
-        this.mouseTip.element.setAttribute('style', this.mouseTip.attributes.style);
+        // Store a local copy of the mousetip style attributes
+        let { style } = this.mouseTip.attributes;
 
-        // Next, find the explicit style attributes that have been set...
-        const styles = Object.keys(this.mouseTip.attributes)
-            .filter(key => ![ 'direction', 'html', 'message', 'offset', 'style' ].includes(key) && this.mouseTip.attributes[key]);
-        // ... and apply them to the mousetip element
-        styles.forEach(style => this.mouseTip.element.style[style] = this.mouseTip.attributes[style]);
+        // First, set the element style attribute in case the corresponding mousetip attribute (mousetip-style) has been set
+        this.mouseTip.element.setAttribute('style', style.base);
+
+        // Ignore the base styles (mousetip-style)...
+        delete style.base;
+        // ... and find the explicit style attributes that have been set and apply them to the mousetip element
+        Object.keys(style)
+            .filter(key  => style[key])
+            .forEach(key => this.mouseTip.element.style[key] = this.mouseTip.attributes.style[key]);
     }
 
     // Create the mousetip
