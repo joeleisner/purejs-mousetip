@@ -6,7 +6,7 @@ class MouseTip {
         html       = true,
         msg        = '',
         offset     = 15,
-        selector   = 'mousetip',
+        selector   = {},
         stylesheet = false,
         styles     = {}
     } = {}) {
@@ -30,7 +30,10 @@ class MouseTip {
         this.msg        = msg;
         this.offset     = offset;
         this.direction  = direction;
-        this.selector   = selector;
+        this.selector   = this.overrideDefaults({
+            full:  'mousetip',
+            short: 'mt'
+        }, selector);
         this.stylesheet = stylesheet;
 
         // If a custom stylesheet is being used, do nothing else...
@@ -60,10 +63,10 @@ class MouseTip {
         // Create the global styles <style> tag...
         const css = document.createElement('style');
         // ... and define the base mousetip styles based on class settings
-        let styles = `#${ this.selector }{position:${ this.styles.position };display:${ this.styles.display };padding:${ this.styles.padding };border-radius:${ this.styles.borderRadius };background-color:${ this.styles.backgroundColor };color:${ this.styles.color };z-index:${ this.styles.zIndex };}`;
+        let styles = `#${ this.selector.full }{position:${ this.styles.position };display:${ this.styles.display };padding:${ this.styles.padding };border-radius:${ this.styles.borderRadius };background-color:${ this.styles.backgroundColor };color:${ this.styles.color };z-index:${ this.styles.zIndex };}`;
 
         // If animations are enabled, add additional styles to support in/out transitions
-        if (this.animations) styles += `@keyframes ${ this.animations.name }{from{${ this.animations.from }}to{${ this.animations.to }}}#${ this.selector }[aria-hidden="false"],#${ this.selector }[aria-hidden="true"]{animation: ${ this.animations.name } ${ this.animations.duration } ${ this.animations.timing };}#${ this.selector }[aria-hidden="true"]{animation-direction:reverse;}`;
+        if (this.animations) styles += `@keyframes ${ this.animations.name }{from{${ this.animations.from }}to{${ this.animations.to }}}#${ this.selector.full }[aria-hidden="false"],#${ this.selector.full }[aria-hidden="true"]{animation: ${ this.animations.name } ${ this.animations.duration } ${ this.animations.timing };}#${ this.selector.full }[aria-hidden="true"]{animation-direction:reverse;}`;
 
         // Fill the global styles <style> tag with the defined styles,...
         css.textContent = styles;
@@ -117,9 +120,9 @@ class MouseTip {
     }
 
     // Get an attribute from the target element
-    getTargetAttribute(name, wrapper) {
+    getTargetAttribute(fullName, shortName, wrapper) {
         // Get the attribute and ensure it's an empty string if it doesn't exist
-        const attribute = this.target.getAttribute(`${ this.selector }-${ name }`) || '';
+        const attribute = this.target.getAttribute(`${ this.selector.full }:${ fullName }`) || this.target.getAttribute(`${ this.selector.short }:${ shortName }`) || '';
 
         // If no wrapper function has been set, return the attribute as is...
         if (!wrapper) return attribute;
@@ -128,29 +131,29 @@ class MouseTip {
     }
 
     // Check to see if the target element has a given attribute
-    targetHasAttribute(name) {
-        return this.target.hasAttribute(`${ this.selector }-${ name }`);
+    targetHasAttribute(fullName, shortName) {
+        return this.target.hasAttribute(`${ this.selector.full }:${ fullName }`) || this.target.hasAttribute(`${ this.selector.short }:${ shortName }`);
     }
 
     // Set the mousetip's local attributes
     setLocalAttributes() {
         // Override global attributes with target attributes if possible...
-        const direction = this.getTargetAttribute('direction').split(' ') || this.direction,
-            html        = this.targetHasAttribute(`${ this.html ? 'disable' : 'enable' }-html`),
+        const direction = this.getTargetAttribute('direction', 'dr').split(' ') || this.direction,
+            html        = this.targetHasAttribute(`${ this.html ? 'disable' : 'enable' }-html`, `${ this.html ? 'd' : 'e' }h`),
             message     = {
-                text: this.getTargetAttribute('msg') || this.msg,
+                text: this.getTargetAttribute('msg', 'm') || this.msg,
                 type: (!this.html && !html) || (this.html && html) ? 'textContent' : 'innerHTML'
             },
-            offset      = this.getTargetAttribute('offset', Number)       || this.offset,
+            offset      = this.getTargetAttribute('offset', 'o', Number) || this.offset,
             style       = {
-                backgroundColor: this.getTargetAttribute('background-color'),
-                base:            this.getTargetAttribute('style'),
-                borderRadius:    this.getTargetAttribute('border-radius'),
-                color:           this.getTargetAttribute('color'),
-                display:         this.getTargetAttribute('display'),
-                padding:         this.getTargetAttribute('padding'),
-                position:        this.getTargetAttribute('position'),
-                zIndex:          this.getTargetAttribute('z-index')
+                backgroundColor: this.getTargetAttribute('background-color', 'bc'),
+                base:            this.getTargetAttribute('style', 's'),
+                borderRadius:    this.getTargetAttribute('border-radius', 'br'),
+                color:           this.getTargetAttribute('color', 'c'),
+                display:         this.getTargetAttribute('display', 'ds'),
+                padding:         this.getTargetAttribute('padding', 'pd'),
+                position:        this.getTargetAttribute('position', 'ps'),
+                zIndex:          this.getTargetAttribute('z-index', 'z')
             };
         // ... and assign them as the mousetip's attributes
         this.mouseTip.attributes = {
@@ -186,7 +189,7 @@ class MouseTip {
         // Create the mousetip,...
         this.mouseTip.element = document.createElement('span');
         // ... assign its ID,...
-        this.mouseTip.element.id                    = this.selector;
+        this.mouseTip.element.id = this.selector.full;
         // ... set its styles,...
         this.setLocalStyles();
         // ... and add its message
@@ -272,7 +275,7 @@ class MouseTip {
     // Start handling mouse events
     start() {
         // Grab all target elements by selector...
-        const targets = Array.from(document.querySelectorAll(`[${ this.selector }]`));
+        const targets = Array.from(document.querySelectorAll(`[${ this.selector.full }], [${ this.selector.short }]`));
         // ... and if no target elements were found, do nothing
         if (!targets) return;
 
