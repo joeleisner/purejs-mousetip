@@ -1,7 +1,7 @@
 {
   "name": "purejs-mousetip",
   "version": "3.0.0",
-  "description": "A pure javascript solution for creating tooltips that follow your mouse",
+  "description": "A vanilla javascript solution for creating tooltips that follow your mouse.",
   "main": "dist/modules/mousetip.common.js",
   "repository": {
     "type": "git",
