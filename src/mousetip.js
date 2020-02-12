@@ -275,7 +275,7 @@ class MouseTip {
     // Start handling mouse events
     start(elements) {
         // Grab all target elements by selector...
-        const targets = elements || Array.from(document.querySelectorAll(`[${ this.selector.full }], [${ this.selector.short }]`));
+        const targets = elements ? Array.from(elements) : Array.from(document.querySelectorAll(`[${ this.selector.full }], [${ this.selector.short }]`));
         // ... and if no target elements were found, do nothing
         if (!targets) return;
 
