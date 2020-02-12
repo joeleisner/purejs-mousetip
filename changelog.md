@@ -19,7 +19,8 @@ Pure JS Mousetip has been overhauled from the ground up to support some killer n
     - A new `mousetip-style` attribute to alleviate the need for multiple style attributes or to style the mousetip locally beyond what's included.
     - Shorthand variants are now a thing! Hate typing out `mousetip:background-color="..."`? Try `mt:bc="..."` instead.
 - Optimizations have been made to make things faster and less resource intensive.
-    - For each element using Pure JS Mousetip, there's 2 event listeners instead of 3.
+    - Elements can be passed into the `.start()` method to override the default behavior of searching the document for mousetip targets, allowing Pure JS Mousetip to be more easily integrated into other JS libraries, such as React.
+    - For each target element using Pure JS Mousetip, there's 2 event listeners instead of 3.
     - `window.requestAnimationFrame` is used for each update to a mousetip's position.
 
 Plus more! There's a lot to in this update to get excited about.
