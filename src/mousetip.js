@@ -4,7 +4,7 @@ class MouseTip {
         animations = true,
         direction  = [ 'bottom', 'right' ],
         html       = true,
-        msg        = '',
+        message    = '',
         offset     = 15,
         selector   = {},
         stylesheet = false,
@@ -27,7 +27,7 @@ class MouseTip {
         }, animations) : false;
         // ... and assign all other settings
         this.html       = html;
-        this.msg        = msg;
+        this.message    = message;
         this.offset     = offset;
         this.direction  = direction;
         this.selector   = this.overrideDefaults({
@@ -141,7 +141,7 @@ class MouseTip {
         const direction = this.getTargetAttribute('direction', 'dr').split(' ') || this.direction,
             html        = this.targetHasAttribute(`${ this.html ? 'disable' : 'enable' }-html`, `${ this.html ? 'd' : 'e' }h`),
             message     = {
-                text: this.getTargetAttribute('msg', 'm') || this.msg,
+                text: this.getTargetAttribute('message', 'm') || this.message,
                 type: (!this.html && !html) || (this.html && html) ? 'textContent' : 'innerHTML'
             },
             offset      = this.getTargetAttribute('offset', 'o', Number) || this.offset,
