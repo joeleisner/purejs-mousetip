@@ -33,7 +33,7 @@ class MouseTip {
         this.selector   = this.overrideDefaults({
             full:  'mousetip',
             short: 'mt'
-        }, selector);
+        }, typeof selector === 'string' ? { full: selector } : selector);
         this.stylesheet = stylesheet;
 
         // If a custom stylesheet is being used, do nothing else...
