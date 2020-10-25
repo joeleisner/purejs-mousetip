@@ -1,0 +1,10 @@
+:local(.className) {
+    position: var(--position, absolute);
+    display: var(--display, inline-block);
+    padding: var(--padding, .75rem 1rem);
+    border-radius: var(--borderRadius, .25rem);
+    background-color: var(--backgroundColor, rgba(0,0,0,.75));
+    color: var(--color, #fff);
+    z-index: var(--zIndex, 9999);
+    pointer-events: var(--pointerEvents, none);
+}
