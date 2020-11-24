@@ -52,6 +52,7 @@ export default class MouseTip {
         if (this.animations && typeof this.animations !== 'object') this.animations = {};
         // ... and use the appropriate global CSS depending on if animations are enabled or not
         this.css = this.animations ? animationsCSS : stylesCSS;
+        console.log(this.css)
     }
 
     // Override default objects with that of user defined objects
@@ -95,8 +96,8 @@ export default class MouseTip {
         // If a custom stylesheet is enabled, do nothing
         if (this.stylesheet) return;
 
-        // Get the CSS local className...
-        const { className } = this.css.locals;
+        // Get the CSS local mousetip class...
+        const { mousetip } = this.css.locals;
         // ... and generate an array of CSS variables from the user's global styles
         const variables = [
             ...this.generateCSSVariables(this.styles),
@@ -109,7 +110,7 @@ export default class MouseTip {
         // Create an overrides style tag...
         const overrides = document.createElement('style');
         // ... and with a rule giving the class name the generated CSS variables
-        overrides.textContent = `[class="${ className }"]{${ variables.join('')}}`;
+        overrides.textContent = `[class="${ mousetip }"]{${ variables.join('')}}`;
 
         // Finally, initialize the global CSS,...
         this.css.use();
@@ -228,7 +229,7 @@ export default class MouseTip {
         const offset = this.getTargetAttribute('offset', 'o', Number) || this.offset;
 
         // Get the target's local style attributes...
-        const backgroundColor = this.getTargetAttribute('background-color', 'bc');
+        const backgroundColor = this.getTargetAttribute('background-color', 'bg');
         const base            = this.getTargetAttribute('style',            's');
         const borderRadius    = this.getTargetAttribute('border-radius',    'br');
         const color           = this.getTargetAttribute('color',            'c');
@@ -285,7 +286,7 @@ export default class MouseTip {
         // Create the mousetip,...
         this.mouseTip.element = document.createElement('span');
         // ... assign its class name,...
-        this.mouseTip.element.className = this.stylesheet ? this.selector.full : this.css.locals.className;
+        this.mouseTip.element.className = this.stylesheet ? this.selector.full : this.css.locals.mousetip;
         // ... set its styles,...
         this.setLocalStyles();
         // ... and add its message
@@ -362,12 +363,12 @@ export default class MouseTip {
         // Define the appropriate adjustments...
         const adjustments = {
             offsetHeight: {
-                top()    { return this.getTopLeftAdjustment('offsetHeight'); },
-                center() { return this.getCenterAdjustment('offsetHeight'); }
+                top:    () => this.getTopLeftAdjustment('offsetHeight'),
+                center: () => this.getCenterAdjustment('offsetHeight')
             },
             offsetWidth: {
-                left()   { return this.getTopLeftAdjustment('offsetWidth'); },
-                center() { return this.getCenterAdjustment('offsetWidth'); }
+                left:   () => this.getTopLeftAdjustment('offsetWidth'),
+                center: () => this.getCenterAdjustment('offsetWidth')
             }
         };
         // ... and grab the correct one based on the given dimension and direction

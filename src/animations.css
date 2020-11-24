@@ -20,8 +20,8 @@
     }
 }
 
-:local(.className) {
-    composes: className from './styles.css';
+:local(.mousetip) {
+    composes: mousetip from './styles.css';
 
     &[aria-hidden="false"],
     &[aria-hidden="true"] {
