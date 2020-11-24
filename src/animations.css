@@ -1,0 +1,34 @@
+@keyframes :local(keyFrame) {
+    from {
+        transform: var(--from--transform, translateY(.5rem));
+        opacity: var(--from--opacity, 0);
+    }
+    to {
+        transform: var(--to--transform, translateY(0));
+        opacity: var(--to--opacity, 1);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    @keyframes :local(keyFrame) {
+        from {
+            opacity: var(--from--opacity, 0);
+        }
+        to {
+            opacity: var(--to--opacity, 1);
+        }
+    }
+}
+
+:local(.mousetip) {
+    composes: mousetip from './styles.css';
+
+    &[aria-hidden="false"],
+    &[aria-hidden="true"] {
+        animation: keyFrame var(--duration, .2s) var(--timing, ease-in-out);
+    }
+
+    &[aria-hidden="true"] {
+        animation-direction: reverse;
+    }
+}

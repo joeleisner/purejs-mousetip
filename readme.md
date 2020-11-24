@@ -18,7 +18,7 @@ Pure JS Mousetip has been overhauled from the ground up to support some killer n
 - Global adjustments have been simplified, cleaned up, and extended.
     - The `position` adjustment has been renamed `direction` to distinguish it from CSS position.
     - All style adjustments can be made under the `style` adjustment object, alleviating the need to prefix them with `css`.
-    - A new `animations` adjustment is available! This can be set to a boolean to enable/disable mousetip animations, or it can be set to an object to adjust animation settings such as duration, from/to, timing, and more.
+    - A new `animations` adjustment is available! This can be set to a boolean to enable/disable mousetip animations, or it can be set to an object to adjust animation settings such as duration, from/to transform/opacity, timing, and more.
 - Local attributes have been simplified and extended as well!
     - Style attributes no longer need the `css-` prefix, and have been renamed to more closely resemble they're CSS rules.
     - A new `mousetip-style` attribute to alleviate the need for multiple style attributes or to style the mousetip locally beyond what's included.
@@ -45,38 +45,13 @@ npm i
 
 ## Development
 ```shell
-# npm run * / npx gulp *
-# *:exp = expanded / *:min = minified (only affects scripts)
-
-# Build all assets
+# Build all production assets
 npm run build
-npm run build:exp
-npm run build:min
 
-# Build all module assets
-npm run modules
-# Build CommonJS module asset (type: CommonJS, output: dist/modules/mousetip.common.js)
-npm run modules:common
-# Build modern module asset (type: ES2015 (import/export), output: dist/modules/mousetip.js)
-npm run modules:modern
-
-# Build all script assets
-npm run scripts
-npm run scripts:exp
-npm run scripts:min
-# Build legacy script assets (transpiler: Babel, output: dist/mousetip.legacy[.min].js)
-npm run scripts:legacy
-npm run scripts:legacy:exp
-npm run scripts:legacy:min
-# Build modern script assets (transpiler: none, output: dist/mousetip[.min].js)
-npm run scripts:modern
-npm run scripts:modern:exp
-npm run scripts:modern:min
-
-# Build all assets when changes are made
-npm run watch
-npm run watch:exp
-npm run watch:min
+# Build all development assets and spin up a local server
+npm run develop
+npm run dev
+npm run start
 ```
 
 ## Author
