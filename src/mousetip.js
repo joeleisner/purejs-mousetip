@@ -4,6 +4,7 @@ import animationsCSS from './animations.css';
 export default class MouseTip {
     // Construct the class
     constructor({
+        id         = null,
         animations = true,
         direction  = [ 'bottom', 'right' ],
         html       = true,
@@ -25,6 +26,9 @@ export default class MouseTip {
             reducedMotion: false,
             stop:          false
         };
+
+        // Initialize a unique identifier
+        this.id = id;
 
         // Define the global animations...
         this.animations = animations;
@@ -52,7 +56,6 @@ export default class MouseTip {
         if (this.animations && typeof this.animations !== 'object') this.animations = {};
         // ... and use the appropriate global CSS depending on if animations are enabled or not
         this.css = this.animations ? animationsCSS : stylesCSS;
-        console.log(this.css)
     }
 
     // Override default objects with that of user defined objects
@@ -110,7 +113,7 @@ export default class MouseTip {
         // Create an overrides style tag...
         const overrides = document.createElement('style');
         // ... and with a rule giving the class name the generated CSS variables
-        overrides.textContent = `[class="${ mousetip }"]{${ variables.join('')}}`;
+        overrides.textContent = `#${this.id}{${ variables.join('')}}`;
 
         // Finally, initialize the global CSS,...
         this.css.use();
@@ -285,7 +288,9 @@ export default class MouseTip {
 
         // Create the mousetip,...
         this.mouseTip.element = document.createElement('span');
-        // ... assign its class name,...
+        // ... assign its ID...
+        this.mouseTip.element.id = this.id;
+        // ... and its class name,...
         this.mouseTip.element.className = this.stylesheet ? this.selector.full : this.css.locals.mousetip;
         // ... set its styles,...
         this.setLocalStyles();
@@ -494,6 +499,11 @@ export default class MouseTip {
         if (this.state.stop) this.targets = [];
     }
 
+    // Generate a unique ID
+    uniqueId() {
+        return '_' + Math.random().toString(36).substr(2, 9);
+    }
+
     // Start handling mouse events
     start(elements) {
         // Grab all target elements by selector...
@@ -501,8 +511,10 @@ export default class MouseTip {
         // ... and if no target elements were found, do nothing
         if (!targets) return;
 
-        // Store the target elements for reference
+        // Store the target elements for reference...
         this.targets = targets;
+        // ... and give this instance's mousetips a unique ID
+        if (!this.id) this.id = this.uniqueId();
 
         // Add the reduced motion...
         this.reducedMotion();
@@ -520,6 +532,8 @@ export default class MouseTip {
 
         // Enable the stop state,...
         this.state.stop = true;
+        // ... and reset the unique ID
+        this.id = null;
 
         // Remove the reduced motion...
         this.reducedMotion();
