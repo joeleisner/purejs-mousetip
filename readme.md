@@ -21,7 +21,7 @@ Pure JS Mousetip has been overhauled from the ground up to support some killer n
     - A new `animations` adjustment is available! This can be set to a boolean to enable/disable mousetip animations, or it can be set to an object to adjust animation settings such as duration, from/to transform/opacity, timing, and more.
 - Local attributes have been simplified and extended as well!
     - Style attributes no longer need the `css-` prefix, and have been renamed to more closely resemble they're CSS rules.
-    - A new `mousetip-style` attribute to alleviate the need for multiple style attributes or to style the mousetip locally beyond what's included.
+    - A new `mousetip:style` attribute to alleviate the need for multiple style attributes or to style the mousetip locally beyond what's included.
     - Shorthand variants are now a thing! Hate typing out `mousetip:background-color="..."`? Try `mt:bc="..."` instead.
 - Optimizations have been made to make things faster and less resource intensive.
     - Elements can be passed into the `.start()` method to override the default behavior of searching the document for mousetip targets, allowing Pure JS Mousetip to be more easily integrated into other JS libraries, such as React.
