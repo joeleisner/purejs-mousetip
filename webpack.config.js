@@ -7,7 +7,7 @@ const mode = process.env.NODE_ENV || 'development';
 
 module.exports = {
     devServer: {
-        contentBase: dist
+        static: dist
     },
     entry: './src/mousetip.js',
     mode,
