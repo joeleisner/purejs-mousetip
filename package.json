@@ -48,5 +48,10 @@
     "license",
     "readme.md"
   ],
-  "browserslist": "last 2 versions and > 0% and not dead"
+  "browserslist": [
+    "defaults and last 2 versions",
+    "not Explorer <= 11",
+    "not ExplorerMobile 11",
+    "not OperaMini all"
+  ]
 }
